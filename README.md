@@ -43,6 +43,20 @@ App local para gestionar servidores MCP en todos tus agentes y abrirlos desde un
   - MCP `mcp-hub-design` (en los 5 agentes): `design_list`, `design_create`, `design_message`, `design_wait`, `design_get`, `design_screenshot` (devuelve la imagen), `design_export` y `design_open` (lo abre en la ventana del Hub). Enlace directo: `http://127.0.0.1:7777/#design/<slug>`.
   - Exportar a PDF, PNG, PPTX (presentaciones), HTML de un solo archivo o ZIP; presentar a pantalla completa; “Pasar a código” abre un agente con el encargo de implementarlo.
 
+- **Chat unificado y debates**: un hilo con varios agentes; escribe `@claude`, `@codex`, `@gemini` o `@todos` y cada uno responde viendo lo que dijeron los demás. "Debate": dos agentes discuten por turnos un tema y un tercero hace de juez.
+- **Tablero kanban** (Ideas, En curso, Revisar, Hecho): al mover una tarjeta a "En curso" se lanza su encargo y, al terminar, pasa sola a "Revisar". Las tarjetas pueden venir de issues de GitHub o de los agentes (`board_add`).
+- **Recetas (grabar y repetir)**: guarda los pasos de un encargo terminado y repítelo en otro proyecto; el agente lo adapta a los nombres de ese proyecto.
+- **Agente sombra**: en Terminales → panel de la sesión → "Vigilar esta terminal". Otro agente (por defecto Claude Haiku, solo lectura) mira la pantalla cada N minutos, solo si cambió, y avisa de errores, tests que fallan, comandos peligrosos o credenciales a la vista.
+- **Mapa del proyecto**: módulos y dependencias calculados con los imports reales (JS/TS, Python, CSS, HTML), sin IA; se actualiza solo. Opcionalmente un agente describe cada módulo.
+- **Monitores**: comprueban una URL cada N minutos (código esperado y texto opcional). Tras 2 fallos seguidos avisan y, si lo configuras, un agente investiga la causa en la carpeta del proyecto y propone el arreglo. También avisan al recuperarse.
+- **Integraciones**:
+  - **Calendario** (iCal, por ejemplo la dirección secreta de Google Calendar; eventos recurrentes y zonas horarias): las tareas programadas con "Aplazar si estoy ocupado" esperan a que termine el evento.
+  - **GitHub** (con tu sesión de `gh`): issues de un repositorio → encargo aislado o tarjeta del tablero; "Crear PR" sube la rama de un encargo aislado y abre un PR (borrador) con su revisión independiente adjunta. Solo se sube algo cuando lo pulsas.
+  - **Home Assistant**: los avisos pueden llegar a la app de HA, hacer parpadear una luz o decirse por un altavoz; al salir de casa (entidad `person`/`device_tracker`) la cola de encargos se pausa y al volver se reanuda.
+- **MCP `mcp-hub-extras`** (Claude Code, Codex y OpenCode): `calendar_events`, `calendar_free_slots`, `calendar_busy_now`, `board_list`, `board_add`, `project_map` y `monitors_status`.
+- **Sala de control**: todas las terminales en mosaico, con aprobaciones pendientes, encargos activos y avisos del agente sombra. **Ctrl+K** abre una paleta para ir a cualquier sección o lanzar acciones.
+- **Diseño, extras**: vídeo de demostración del diseño (MP4, GIF o WebM, recorre la página sola) y dos tipos nuevos: "Desde captura" (reproduce una captura como prototipo editable) y "Presentación de un proyecto" (diapositivas sacadas del código enlazado).
+
 - **Móvil y tablet**: la misma app adaptada a pantallas táctiles (instalable como PWA); todo se ejecuta en el ordenador.
   - Wi‑Fi de casa: HTTPS en el puerto 7778 con certificado propio (`~/.config/mcp-hub/tls`). Fuera de casa: Tailscale (`tailscale serve` → 127.0.0.1:7779).
   - Cada dispositivo se vincula con un QR de un solo uso y recibe su propia cookie (revocable en Móvil → Dispositivos). El token interno nunca sale del ordenador y las rutas de agentes (`/agent/*`) no son accesibles desde fuera.
@@ -55,4 +69,4 @@ App local para gestionar servidores MCP en todos tus agentes y abrirlos desde un
 
 Datos en `~/.config/mcp-hub/servers.json` (permisos 600, incluye las API keys).
 Antes del primer cambio se guarda una copia `*.mcp-hub.bak` de cada config JSON que se edita.
-Mensajes: `~/.config/mcp-hub/messages.json`. Encargos: `~/.config/mcp-hub/delegations.json` (+ `delegation-settings.json`, `job-state/`); sesiones: `sessions.json`/`previous-sessions.json`; perfiles de proyecto: `project-profiles.json`; salud MCP: `mcp-health.json`; roles y plantillas: `library.json`; tareas programadas: `schedules.json`. Hoja de ruta y estado de las mejoras: `ROADMAP.md`. Log: `~/.local/state/mcp-hub.log`. Puerto: `MCP_HUB_PORT`.
+Mensajes: `~/.config/mcp-hub/messages.json`. Encargos: `~/.config/mcp-hub/delegations.json` (+ `delegation-settings.json`, `job-state/`); sesiones: `sessions.json`/`previous-sessions.json`; perfiles de proyecto: `project-profiles.json`; salud MCP: `mcp-health.json`; roles y plantillas: `library.json`; tareas programadas: `schedules.json`. Chat y debates: `chats.json`; tablero: `board.json`; monitores: `monitors.json`; calendario: `calendar.json` (URLs secretas, permisos 600); Home Assistant: `homeassistant.json` (token, permisos 600); mapas: `maps/`; recetas: en `library.json`. Hoja de ruta y estado de las mejoras: `ROADMAP.md`. Log: `~/.local/state/mcp-hub.log`. Puerto: `MCP_HUB_PORT`.

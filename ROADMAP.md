@@ -2,7 +2,7 @@
 
 Estado real de las 50 mejoras propuestas. **Hecho** = se puede usar de principio a fin y se ha probado; **Parcial** = existe una parte usable (se indica cuál y qué falta); **Pendiente** = no implementado.
 
-Última actualización: 2026-10-01 (cuarto bloque: perfiles de proyecto).
+Última actualización: 2026-10-02 (quinto bloque: 15 funciones nuevas, fuera de las 50; ver al final).
 
 ## Delegación y control (prioridad 1)
 
@@ -54,9 +54,9 @@ Estado real de las 50 mejoras propuestas. **Hecho** = se puede usar de principio
 | # | Mejora | Estado | Notas |
 |---|---|---|---|
 | 31 | Tareas programadas | **Hecho** | Encargos recurrentes cada N minutos (mínimo 5) o a una hora en los días elegidos. Usan la misma cola, permisos, aislamiento, aprobaciones y límites. Se pueden activar, desactivar, lanzar ahora y editar. Si MCP Hub está apagado a la hora prevista, esa ejecución se salta. |
-| 32 | Desencadenadores | Pendiente | |
+| 32 | Desencadenadores | Parcial | Solo dos: una web caída (Monitores) lanza una investigación, y el calendario aplaza tareas programadas. No hay desencadenadores por archivos, git o webhooks. |
 | 33 | Reglas de notificación | **Hecho** | Mensajería → Qué te aviso. Seis tipos activables (sesiones, encargos, aprobaciones, tareas programadas, diseño y seguridad), horas de silencio (también cruzando la medianoche) y la opción de que aprobaciones y seguridad lleguen igualmente. Los avisos silenciados quedan en el registro de la conversación. Los avisos van al canal principal; no hay canal distinto por tipo. |
-| 34 | Panel de trabajo | Parcial | Agentes → Encargos: activos, por revisar e historial, con estado, carpeta, quién lo pidió, uso y acciones. Faltan los encargos de otros sistemas y la vista por proyecto. |
+| 34 | Panel de trabajo | Parcial | Agentes → Encargos: activos, por revisar e historial, con estado, carpeta, quién lo pidió, uso y acciones. Faltan los encargos de otros sistemas y la vista por proyecto. La Sala de control (mosaico de terminales, aprobaciones y encargos activos) completa la vista en vivo. |
 | 35 | Línea de tiempo | Pendiente | |
 | 36 | Panel de uso | **Hecho** | Agentes → Encargos → Uso: encargos, % de éxito, duración media (medida), turnos medios y coste estimado, por agente y modelo o por proyecto (carpeta). Los turnos y el coste son los que informa el agente; el coste solo lo da Claude Code y es su estimación. Se calcula con los últimos 200 encargos guardados. |
 | 37 | Pruebas de regresión de agentes | Pendiente | |
@@ -74,7 +74,7 @@ Estado real de las 50 mejoras propuestas. **Hecho** = se puede usar de principio
 | 44 | Adjuntos para todas las sesiones | Parcial | Solo en Diseño (imágenes y dibujos) y en el MCP de diseño (`images`). |
 | 45 | Entrada por voz | Pendiente | El usuario eligió "solo texto" para el móvil. |
 | 46 | Cuaderno de investigación web | Pendiente | El tipo "Investigación" de Diseño cita fuentes, pero no las guarda aparte. |
-| 47 | Encargos desde tickets | Pendiente | |
+| 47 | Encargos desde tickets | Parcial | Issues de GitHub → encargo aislado o tarjeta del tablero, y PR desde el encargo con su revisión adjunta (Integraciones → GitHub). Faltan Jira y Linear. La creación del PR no se ha probado (sube a GitHub). |
 | 48 | Prototipos navegables | Parcial | Los prototipos de Diseño son navegables (varias pantallas con JS). No hay un editor visual de enlaces entre pantallas. |
 | 49 | Revisión visual y de accesibilidad | Parcial | El tipo "Color + tipografía" calcula contrastes WCAG y hay capturas por tamaño de pantalla (`design_screenshot`). No hay una comparación automática. |
 | 50 | Vista previa compartible | Parcial | Exportación a un HTML único y acceso remoto (Wi‑Fi o Tailscale/Funnel con dispositivos vinculados). No hay enlaces temporales sin vincular. |
@@ -119,3 +119,32 @@ Estado real de las 50 mejoras propuestas. **Hecho** = se puede usar de principio
   - Exploración y llamada real a `time.get_current_time`.
   - "Comprobar todos" con los 17 servidores registrados (14 correctos; desktop-commander y Roblox_Studio terminan al arrancar, n8n pide OAuth).
   - Revisión de seguridad con configuraciones peligrosas de ejemplo.
+
+## Funciones nuevas (quinto bloque, fuera de las 50)
+
+| Función | Estado | Notas |
+|---|---|---|
+| Chat unificado | **Hecho** | `@claude`, `@codex`, `@todos`… en un hilo; cada agente ve lo que dijeron los demás. |
+| Debate | **Hecho** | Dos agentes por turnos y un tercero de juez. |
+| Tablero kanban | **Hecho** | Mover a "En curso" lanza el encargo; al terminar pasa a "Revisar". |
+| Recetas (grabar y repetir) | **Hecho** | Los pasos se guardan con rutas relativas; el agente adapta la receta al otro proyecto. |
+| Mapa del proyecto | **Hecho** | Imports reales, sin IA; se actualiza solo. |
+| Agente sombra | **Hecho** | Solo consulta al agente si la pantalla cambió. |
+| Monitores | **Hecho** | Caída tras 2 fallos, investigación opcional por un agente, aviso de recuperación. |
+| Calendario | **Hecho** | iCal con recurrencias y zonas horarias; "Aplazar si estoy ocupado" en tareas programadas. |
+| GitHub | Parcial | Listar issues y convertirlos en encargo o tarjeta: probado. Crear PR: sin probar (sube a GitHub). |
+| Home Assistant | **Hecho** (simulado) | Probado contra un Home Assistant simulado, no contra el del usuario: notificación, luz, voz, y pausa de la cola al salir de casa. |
+| MCP `mcp-hub-extras` | **Hecho** | 7 herramientas; registrado en Claude Code, Codex y OpenCode. |
+| Vídeo de demostración (Diseño) | **Hecho** | MP4, GIF (ligero: 8 fps, 720 px) o WebM. |
+| "Desde captura" y "Presentación de un proyecto" | **Hecho** | Probados con Claude. |
+| Sala de control y paleta Ctrl+K | **Hecho** | |
+| Vistas en el móvil | **Hecho** | Sin desplazamiento horizontal ni errores de consola a 390 px. |
+
+### Cómo se ha verificado (2026-10-01 y 2026-10-02)
+- Con agentes reales (Claude Haiku y Codex): chat, debate, tablero, receta repetida en otro repositorio, diagnóstico del monitor (encontró el proceso caído) y aviso de la sombra (detectó un JSON con una coma de más).
+- Calendario: un `.ics` servido en local con un evento en curso. La tarea programada se aplazó hasta el final del evento sin lanzar ningún encargo. Las 7 herramientas de `mcp-hub-extras` se probaron por stdio.
+- GitHub: issues reales de `omacom/omarchy` (solo lectura) y conversión en tarjeta enlazada.
+- Home Assistant: servidor simulado que registra las llamadas. Se probaron el token incorrecto (401), el descubrimiento de entidades y el envío a los tres destinos, y la salida y vuelta a casa (la cola se pausa y se reanuda).
+- Diseño: vídeo MP4/GIF del proyecto `prueba-landing`, una captura convertida en prototipo y una presentación de 12 diapositivas sobre MCP Hub, ambos con Claude.
+- Interfaz: Chromium sin ventana a 1440 px y a 390 px, con Sala de control, Ctrl+K → "monitor" → Intro y las vistas nuevas.
+- Durante las pruebas, los avisos se silenciaron con horas de silencio para no enviar correos; quedaron en el registro de Mensajería.
