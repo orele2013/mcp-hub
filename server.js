@@ -9,11 +9,13 @@ import crypto from 'node:crypto';
 import { execFile, execFileSync, spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { WebSocketServer } from 'ws';
+import selfsigned from 'selfsigned';
 import pty from 'node-pty';
+import { IS_WIN, commandLine, terminalShell, openExternalTerminal, openPath, nodeRuntime, expandHome as expandHomeP, dataDir, which as whichP } from './lib/platform.js';
 
 // Cuando se lanza desde el menú de apps el PATH es mínimo: usar el de la shell de login.
-try {
-  const shellPath = execFileSync(process.env.SHELL || '/bin/bash', ['-lc', 'printf %s "$PATH"'], { timeout: 5000 }).toString();
+if (!IS_WIN) try {
+  const shellPath = execFileSync(process.env.SHELL || (process.platform === 'darwin' ? '/bin/zsh' : '/bin/bash'), ['-lc', 'printf %s "$PATH"'], { timeout: 5000 }).toString();
   if (shellPath) process.env.PATH = shellPath;
 } catch {}
 
@@ -140,7 +142,24 @@ function sessionMeta(opts) {
   return { account, mcps };
 }
 const shq = (a) => (/^[A-Za-z0-9_\/.,:=@%+-]+$/.test(a) ? a : `'${String(a).replace(/'/g, `'\\''`)}'`);
-const expandHome = (p) => (p ? p.replace(/^~(?=$|\/)/, HOME) : HOME);
+const expandHome = expandHomeP;
+
+// Scripts auxiliares (MCPs propios, delegate-run…) en una carpeta fija: la app instalada puede moverse
+// (la AppImage se monta en una ruta distinta cada vez), y los agentes guardan la ruta en su configuración.
+const RUNTIME_DIR = path.join(dataDir(), 'runtime');
+const RUNTIME_FILES = ['agents-mcp.js', 'approvals-mcp.js', 'design-mcp.js', 'extras-mcp.js', 'messaging-mcp.js', 'vault-mcp.js', 'delegate-run.js', 'bin/design-shot.mjs', 'lib/platform.js'];
+function installRuntime() {
+  for (const f of RUNTIME_FILES) {
+    const dst = path.join(RUNTIME_DIR, f);
+    fs.mkdirSync(path.dirname(dst), { recursive: true });
+    fs.copyFileSync(path.join(ROOT, f), dst);
+  }
+  fs.writeFileSync(path.join(RUNTIME_DIR, 'package.json'), '{"type":"module"}\n');
+}
+installRuntime();
+const runtimeScript = (f) => path.join(RUNTIME_DIR, f);
+// Spec de un MCP propio de MCP Hub: Node (del sistema o el de la app) + script en la carpeta fija
+const hubScript = (f) => { const rt = nodeRuntime(); return { command: rt.command, args: [runtimeScript(f)], env: { ...rt.env } }; };
 
 // Variables del entorno padre que no deben filtrarse a los agentes (p.ej. si MCP Hub se lanzó desde Claude Code)
 const INHERITED_JUNK = /^(CLAUDECODE|CLAUDE_CODE_.*|CLAUDE_PID|CLAUDE_EFFORT|CODEX_SANDBOX.*|MCP_HUB_PROVIDER_KEY)$/;
@@ -159,13 +178,14 @@ function buildLaunch(opts) {
   if (!c) throw new Error('Agente desconocido');
   if (opts.delegate) {
     const d = opts.delegate;
-    return { cmd: [process.execPath, path.join(ROOT, 'delegate-run.js'), d.file].map(shq).join(' '),
-      env: { MCP_HUB_DEPTH: String(d.depth) }, unset: [], files: [d.file], title: `↳ ${c.name}` };
+    const rt = nodeRuntime();
+    return { cmd: commandLine([rt.command, runtimeScript('delegate-run.js'), d.file]),
+      env: { MCP_HUB_DEPTH: String(d.depth), ...rt.env }, unset: [], files: [d.file], title: `↳ ${c.name}` };
   }
   if (install) return { cmd: c.install, env, unset, title: `Instalar ${c.name}` };
   if (login) {
     unset.push(...c.apiEnv);
-    return { cmd: c.login.map(shq).join(' '), env, unset, title: `Login ${c.name}` };
+    return { cmd: commandLine(c.login), env, unset, title: `Login ${c.name}` };
   }
   const args = [];
   if (account === 'subscription') {
@@ -203,7 +223,7 @@ function buildLaunch(opts) {
   const extra = (extraArgs || '').match(/(?:[^\s"']+|"[^"]*"|'[^']*')+/g) || [];
   args.push(...extra.map((a) => a.replace(/^["'](.*)["']$/, '$1')));
   const label = account.startsWith('provider:') ? ` · ${db.providers[account.slice(9)].name}` : '';
-  return { cmd: [c.bin, ...args].map(shq).join(' '), env, unset, files, title: c.name + label };
+  return { cmd: commandLine([c.bin, ...args]), env, unset, files, title: c.name + label };
 }
 
 function childEnv(env, unset) {
@@ -217,22 +237,19 @@ function createSession(opts) {
   const cwd = expandHome(opts.cwd);
   if (!fs.existsSync(cwd) || !fs.statSync(cwd).isDirectory()) throw new Error(`La carpeta no existe: ${cwd}`);
   const { cmd: rawCmd, env, unset, title, files = [] } = buildLaunch(opts);
-  const shell = process.env.SHELL || '/bin/bash';
+  const sh = terminalShell();
   const id = crypto.randomUUID().slice(0, 8);
   const baseEnv = { ...childEnv(env, unset), MCP_HUB_SESSION: id };
-  const cmd = rawCmd && unset.length ? `unset ${unset.join(' ')}; ${rawCmd}` : rawCmd;
+  // En Linux/macOS también se quitan dentro de la shell de login, por si el .bashrc/.zshrc las exporta
+  const cmd = rawCmd && unset.length && !IS_WIN ? `unset ${unset.join(' ')}; ${rawCmd}` : rawCmd;
 
   if (opts.external) {
-    const inner = cmd ? `${cmd}; exec ${shq(shell)}` : `exec ${shq(shell)}`;
-    const child = spawn('xdg-terminal-exec', [`--dir=${cwd}`, shell, '-lc', inner],
-      { cwd, env: baseEnv, detached: true, stdio: 'ignore' });
-    child.unref();
+    openExternalTerminal(cwd, cmd, baseEnv);
     rememberDir(cwd);
     return null;
   }
 
-  const args = cmd ? ['-lc', cmd] : ['-l'];
-  const p = pty.spawn(shell, args, { name: 'xterm-256color', cols: opts.cols || 120, rows: opts.rows || 32, cwd, env: baseEnv });
+  const p = pty.spawn(sh.file, sh.args(cmd), { name: 'xterm-256color', cols: opts.cols || 120, rows: opts.rows || 32, cwd, env: baseEnv, useConpty: true });
   const { client, mode, mcps, extraArgs, account, model, secrets } = opts;
   const s = { id, title: `${title} · ${path.basename(cwd) || '/'}`, client: opts.client, cwd, pty: p, buf: '', sockets: new Set(),
     ...sessionMeta(opts), job: opts.delegate?.id || null, opts: opts.install || opts.login || opts.delegate ? null : { client, cwd, mode, mcps, extraArgs, account, model, secrets, profileId: opts.profileId || null },
@@ -266,7 +283,7 @@ function rememberDir(d) {
 // ---------------- Encargos entre agentes ----------------
 const { JobManager, PERMISSIONS, ISOLATION, STATUS_LABEL, ON_DEP_FAIL } = await import('./lib/jobs.js');
 const jobsMgr = new JobManager(CONF_DIR, {
-  runDir: RUN_DIR, port: PORT, approvalsScript: path.join(ROOT, 'approvals-mcp.js'),
+  runDir: RUN_DIR, port: PORT, approvalsScript: runtimeScript('approvals-mcp.js'),
   agentName: (id) => CLIENTS[id]?.name || id,
   installed: (id) => !!(CLIENTS[id] && which(CLIENTS[id].bin)),
   start: (j) => {
@@ -827,7 +844,7 @@ const routes = {
   'POST /api/vault/reveal': async (b) => { const it = vault.get(b.id); return { secret: it.secret, connection: connectionString(it) }; },
   'POST /api/vault/password': async (b) => { vault.changePassword(b.old, b.new); return {}; },
   'POST /api/vault/register': async (b) => {
-    db.servers[VAULT_SERVER] = { transport: 'stdio', command: process.execPath, args: [path.join(ROOT, 'vault-mcp.js')], env: {},
+    db.servers[VAULT_SERVER] = { transport: 'stdio', ...hubScript('vault-mcp.js'),
       description: 'Bóveda de MCP Hub: credenciales para los agentes', targets: b.targets || {}, catalogId: 'vault' };
     save();
     return { errors: await applyAll(VAULT_SERVER) };
@@ -857,7 +874,7 @@ const routes = {
   'POST /api/delegations/settings': async (b) => jobsMgr.saveSettings(b),
   'POST /api/approvals/decide': async (b) => jobsMgr.decide(b.id, !!b.allow, b.note),
   'POST /api/delegations/register': async (b) => {
-    db.servers[AGENTS_SERVER] = { transport: 'stdio', command: process.execPath, args: [path.join(ROOT, 'agents-mcp.js')], env: {},
+    db.servers[AGENTS_SERVER] = { transport: 'stdio', ...hubScript('agents-mcp.js'),
       description: 'Encargos de MCP Hub: los agentes pueden encargar tareas a otros agentes', targets: b.targets || {}, catalogId: 'agents' };
     save();
     return { errors: await applyAll(AGENTS_SERVER) };
@@ -882,7 +899,7 @@ const routes = {
   'GET /api/design/formats3d': async () => ({ formats: designer.formats3d() }),
   'GET /api/design/versions': async (_b, url) => ({ versions: await designer.versions(url.searchParams.get('slug')) }),
   'POST /api/design/restore': async (b) => { await designer.restore(b.slug, b.sha); return {}; },
-  'POST /api/design/open-folder': async (b) => { spawn('xdg-open', [designer.dir(b.slug)], { detached: true, stdio: 'ignore' }).unref(); return {}; },
+  'POST /api/design/open-folder': async (b) => { openPath(designer.dir(b.slug)); return {}; },
   'POST /api/design/handoff': async (b) => {
     const d = designer.dir(b.slug), m = designer.meta(b.slug);
     const cwd = expandHome(b.cwd || d);
@@ -893,7 +910,7 @@ const routes = {
     return { session: createSession({ client: b.agent, cwd, mode: 'all', account: 'default', initialPrompt: prompt }) };
   },
   'POST /api/design/register': async (b) => {
-    db.servers[DESIGN_SERVER] = { transport: 'stdio', command: process.execPath, args: [path.join(ROOT, 'design-mcp.js')], env: {},
+    db.servers[DESIGN_SERVER] = { transport: 'stdio', ...hubScript('design-mcp.js'),
       description: 'Diseño de MCP Hub: los agentes crean, iteran, capturan y exportan diseños', targets: b.targets || {}, catalogId: 'design' };
     save();
     return { errors: await applyAll(DESIGN_SERVER) };
@@ -907,7 +924,7 @@ const routes = {
   'POST /api/messaging/send': async (b) => messenger.send(String(b.text || ''), { channel: b.channel, from: 'Tú (MCP Hub)' }),
   'POST /api/messaging/target': async (b) => { db.messaging.target = b.id || null; save(); return messagingState(); },
   'POST /api/messaging/register': async (b) => {
-    db.servers[MSG_SERVER] = { transport: 'stdio', command: process.execPath, args: [path.join(ROOT, 'messaging-mcp.js')], env: {},
+    db.servers[MSG_SERVER] = { transport: 'stdio', ...hubScript('messaging-mcp.js'),
       description: 'Mensajería de MCP Hub: avisos y preguntas por Telegram, email, Discord o Slack', targets: b.targets || {}, catalogId: 'messaging' };
     save();
     return { errors: await applyAll(MSG_SERVER) };
@@ -929,7 +946,7 @@ const routes = {
   },
   'GET /api/extras': async () => ({ registered: db.servers[EXTRAS_SERVER]?.targets || null }),
   'POST /api/extras/register': async (b) => {
-    db.servers[EXTRAS_SERVER] = { transport: 'stdio', command: process.execPath, args: [path.join(ROOT, 'extras-mcp.js')], env: {},
+    db.servers[EXTRAS_SERVER] = { transport: 'stdio', ...hubScript('extras-mcp.js'),
       description: 'MCP Hub para agentes: calendario, tablero, mapa del proyecto y monitores', targets: b.targets || {}, catalogId: 'extras' };
     save();
     return { errors: await applyAll(EXTRAS_SERVER) };
@@ -1128,8 +1145,15 @@ function ensureCert() {
   if (!ok) {
     const host = os.hostname();
     const san = [...names.map((i) => `IP:${i}`), `DNS:${host}`, `DNS:${host}.local`, 'DNS:localhost'].join(',');
-    execFileSync('openssl', ['req', '-x509', '-newkey', 'rsa:2048', '-nodes', '-days', '3650', '-keyout', keyF, '-out', certF,
-      '-subj', '/CN=MCP Hub', '-addext', `subjectAltName=${san}`], { stdio: 'ignore' });
+    try {
+      execFileSync('openssl', ['req', '-x509', '-newkey', 'rsa:2048', '-nodes', '-days', '3650', '-keyout', keyF, '-out', certF,
+        '-subj', '/CN=MCP Hub', '-addext', `subjectAltName=${san}`], { stdio: 'ignore' });
+    } catch {
+      // Sin openssl (Windows, algunos Mac): certificado propio generado en JavaScript
+      const pems = selfsigned.generate([{ name: 'commonName', value: 'MCP Hub' }], { keySize: 2048, days: 3650, algorithm: 'sha256',
+        extensions: [{ name: 'subjectAltName', altNames: [...names.map((ip) => ({ type: 7, ip })), { type: 2, value: host }, { type: 2, value: `${host}.local` }, { type: 2, value: 'localhost' }] }] });
+      fs.writeFileSync(keyF, pems.private); fs.writeFileSync(certF, pems.cert);
+    }
     fs.chmodSync(keyF, 0o600);
     fs.writeFileSync(metaF, JSON.stringify(names));
   }
@@ -1362,7 +1386,20 @@ server.on('error', (e) => {
   if (e.code === 'EADDRINUSE') { console.error(`El puerto ${PORT} ya está en uso (¿MCP Hub ya está abierto?)`); process.exit(3); }
   throw e;
 });
-server.listen(PORT, '127.0.0.1', () => { console.log(`MCP Hub en http://127.0.0.1:${PORT}`); messenger.start(); startRemote(); });
+// Los MCP propios ya registrados se actualizan a la carpeta fija y al Node actual (p. ej. tras instalar la app o moverla)
+function refreshHubServers() {
+  const files = { [VAULT_SERVER]: 'vault-mcp.js', [AGENTS_SERVER]: 'agents-mcp.js', [DESIGN_SERVER]: 'design-mcp.js', [MSG_SERVER]: 'messaging-mcp.js', [EXTRAS_SERVER]: 'extras-mcp.js' };
+  for (const [name, f] of Object.entries(files)) {
+    const cur = db.servers[name];
+    if (!cur) continue;
+    const want = hubScript(f);
+    if (cur.command === want.command && JSON.stringify(cur.args) === JSON.stringify(want.args) && JSON.stringify(cur.env || {}) === JSON.stringify(want.env)) continue;
+    Object.assign(cur, want);
+    save();
+    applyAll(name).catch((e) => console.error('No se pudo actualizar', name, e.message));
+  }
+}
+server.listen(PORT, '127.0.0.1', () => { console.log(`MCP Hub en http://127.0.0.1:${PORT}`); messenger.start(); startRemote(); refreshHubServers(); });
 
 const shutdown = () => { persistSessions(true); shuttingDown = true; for (const s of sessions.values()) try { s.pty.kill(); } catch {} process.exit(0); };
 process.on('SIGINT', shutdown); process.on('SIGTERM', shutdown);

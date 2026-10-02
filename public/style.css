@@ -1052,3 +1052,10 @@ kbd { font-family: var(--mono); font-size: 10.5px; padding: 1px 5px; border: 1px
 .dz-guide-body ol { margin: 10px 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
 .dz-guide-body p { margin: 8px 0 0; }
 .dz-guide-body b { color: var(--text); }
+
+/* Menú lateral estrecho (ventanas de 901–1100 px): las herramientas, solo con icono */
+@media (min-width: 901px) and (max-width: 1100px) {
+  .side-tools { grid-template-columns: 1fr; width: 44px; }
+  .side-tools .btn { font-size: 0; gap: 0; padding: 0; }
+  .side-tools kbd { display: none; }
+}

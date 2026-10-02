@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg">#0A0A0A</color>
+    <color name="fg">#FFFFFF</color>
+    <color name="fg_muted">#A8A8A8</color>
+    <color name="field_border">#3A3A3A</color>
+</resources>

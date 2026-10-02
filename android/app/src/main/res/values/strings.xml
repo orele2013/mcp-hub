@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MCP Hub</string>
+    <string name="setup_title">MCP Hub</string>
+    <string name="setup_explain">Conecta con MCP Hub en tu ordenador: en el ordenador abre MCP Hub → Móvil → Vincular dispositivo</string>
+    <string name="setup_scan">Escanear el código QR</string>
+    <string name="setup_paste_label">o pega la dirección</string>
+    <string name="setup_paste_hint">https://192.168.1.10:7778/pair?c=…</string>
+    <string name="setup_connect">Conectar</string>
+    <string name="setup_invalid">Dirección no válida. Debe empezar por https://</string>
+    <string name="setup_scan_failed">No se pudo abrir el escáner: %1$s</string>
+    <string name="setup_scan_unavailable">El escáner aún no está disponible (Google Play Services). Inténtalo de nuevo en unos segundos o pega la dirección.</string>
+
+    <string name="tls_title">Certificado del ordenador</string>
+    <string name="tls_message">Te estás conectando a %1$s.\n\nEste es el certificado propio de tu ordenador (autofirmado), por eso Android no lo reconoce. Comprueba que la huella coincide con la que muestra MCP Hub en el ordenador:\n\nSHA-256 %2$s\n\nSi confías, la app lo recordará y solo aceptará este certificado para este ordenador.</string>
+    <string name="tls_trust">Confiar</string>
+    <string name="tls_cancel">Cancelar</string>
+    <string name="tls_cancelled">No se ha confiado en el certificado del ordenador.</string>
+    <string name="tls_changed">El certificado de %1$s ha cambiado desde que lo vinculaste (huella nueva: %2$s).\n\nPuede que hayas reinstalado MCP Hub o que alguien esté interceptando la conexión. Si no lo esperabas, no continúes. Para volver a vincular, pulsa «Cambiar de ordenador».</string>
+
+    <string name="error_title">No se puede conectar</string>
+    <string name="error_generic">No se pudo cargar MCP Hub (%1$s). Comprueba que el ordenador está encendido, que MCP Hub está en marcha y que estás en la misma red Wi‑Fi o en Tailscale.</string>
+    <string name="error_retry">Reintentar</string>
+    <string name="error_change">Cambiar de ordenador</string>
+    <string name="cert_changed_title">El certificado ha cambiado</string>
+
+    <string name="download_done">Descargado en Descargas</string>
+    <string name="download_started">Descargando…</string>
+    <string name="download_failed">No se pudo descargar: %1$s</string>
+    <string name="no_app">No hay ninguna app para abrir este enlace</string>
+</resources>

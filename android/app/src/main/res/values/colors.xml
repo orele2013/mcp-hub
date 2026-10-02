@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg">#FFFFFF</color>
+    <color name="fg">#0A0A0A</color>
+    <color name="fg_muted">#5C5C5C</color>
+    <color name="field_border">#D0D0D0</color>
+    <color name="accent">#F26B1D</color>
+    <color name="on_accent">#FFFFFF</color>
+    <color name="ic_launcher_background">#FF7A1A</color>
+</resources>

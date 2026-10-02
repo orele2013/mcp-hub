@@ -1,8 +1,9 @@
-node_modules/
-*.log
 *.bak
-*.tmp
+dist/
 .env
-.impeccable/review/
-.impeccable/mocks/
 .impeccable/config.local.json
+.impeccable/mocks/
+.impeccable/review/
+*.log
+node_modules/
+*.tmp

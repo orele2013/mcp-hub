@@ -5,6 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
+import { spawnCommand } from './lib/platform.js';
 
 const job = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
 const { agent, task, cwd, model, resultFile, from, permission = 'full', maxTurns, budgetUsd, resumeSid, approvals } = job;
@@ -22,7 +23,7 @@ function claudeArgs() {
   else if (permission === 'ask' && approvals) {
     // Cada acción que necesite permiso se pregunta al usuario en MCP Hub (bandeja de aprobaciones)
     const cfg = path.join(path.dirname(resultFile), `job-${job.id}.mcp.json`);
-    fs.writeFileSync(cfg, JSON.stringify({ mcpServers: { mcphub_approvals: { command: process.execPath, args: [approvals.script], env: { MCP_HUB_JOB: job.id, MCP_HUB_PORT: String(approvals.port) } } } }), { mode: 0o600 });
+    fs.writeFileSync(cfg, JSON.stringify({ mcpServers: { mcphub_approvals: { command: process.execPath, args: [approvals.script], env: { MCP_HUB_JOB: job.id, MCP_HUB_PORT: String(approvals.port), ...(process.versions.electron ? { ELECTRON_RUN_AS_NODE: '1' } : {}) } } } }), { mode: 0o600 });
     a.push('--permission-mode', 'acceptEdits', '--mcp-config', cfg, '--permission-prompt-tool', 'mcp__mcphub_approvals__approve');
   }
   if (maxTurns) a.push('--max-turns', String(maxTurns));
@@ -67,7 +68,7 @@ if (!c) finish(2, `Agente desconocido: ${agent}`);
 const PERM_LABEL = { read: 'solo lectura', edit: 'puede editar archivos', ask: 'pide aprobación', full: 'sin límites' };
 write(`\x1b[1m↳ Encargo de ${from || 'un agente'}\x1b[0m ${dim(`· ${PERM_LABEL[permission] || permission}${resumeSid ? ' · reanudado' : ''}`)}\n${dim(task.length > 600 ? task.slice(0, 600) + '…' : task)}\n${dim('─'.repeat(40))}\n\n`);
 
-const child = spawn(c.bin, c.args(), { cwd, env: { ...process.env, ...c.env, MCP_TOOL_TIMEOUT: '3600000' }, stdio: ['ignore', 'pipe', 'pipe'] });
+const child = spawnCommand(c.bin, c.args(), { cwd, env: { ...process.env, ...c.env, MCP_TOOL_TIMEOUT: '3600000' }, stdio: ['ignore', 'pipe', 'pipe'] });
 let plain = '', errText = '', final = null, pending = '';
 const texts = [];
 child.stderr.on('data', (d) => { errText = (errText + d).slice(-20000); if (agent !== 'codex') write(d.toString()); });
