@@ -506,7 +506,8 @@ async function serveDesign(req, res, url) {
       html = /<\/body>/i.test(html) ? html.replace(/<\/body>(?![\s\S]*<\/body>)/i, inject + '</body>') : html + inject;
       data = Buffer.from(html);
     }
-    res.writeHead(200, { 'content-type': MIME[ext || '.html'] || 'application/octet-stream', 'cache-control': 'no-store' });
+    // El lienzo es un iframe aislado (origen «null»): los módulos JS (p. ej. ./stage.js) se piden en modo CORS
+    res.writeHead(200, { 'content-type': MIME[ext || '.html'] || 'application/octet-stream', 'cache-control': 'no-store', 'access-control-allow-origin': '*' });
     res.end(data);
   } catch { res.writeHead(404); res.end('404'); }
 }
