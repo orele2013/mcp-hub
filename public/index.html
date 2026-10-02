@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="es" translate="no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="token" content="__TOKEN__">
+  <meta name="google" content="notranslate">
+  <title>MCP Hub</title>
+  <link rel="icon" href="/icon.svg">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/icon-180.png">
+  <meta name="theme-color" content="#0E1014">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="/vendor/geist/wght.css">
+  <link rel="stylesheet" href="/vendor/geist-mono/wght.css">
+  <link rel="stylesheet" href="/vendor/xterm.css">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="/icon.svg" alt="" width="34" height="34">
+      <div><b>MCP Hub</b><span class="mono" id="brand-addr"></span></div>
+    </div>
+
+    <nav aria-label="Secciones">
+      <button data-view="servers" class="active"><svg class="i" viewBox="0 0 24 24"><path d="M4 7c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3ZM4 7v5c0 1.7 3.6 3 8 3s8-1.3 8-3V7M4 12v5c0 1.7 3.6 3 8 3s8-1.3 8-3v-5"/></svg><span>Servidores MCP</span><em id="count-servers"></em></button>
+      <button data-view="catalog"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><path d="M16.75 13.5v6.5M13.5 16.75H20"/></svg><span>Catálogo</span><em id="count-catalog"></em></button>
+      <button data-view="agents"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="12" rx="3.5"/><path d="M12 7V4M9.5 12.5V14M14.5 12.5V14"/></svg><span>Agentes</span><em id="count-agents"></em></button>
+      <button data-view="chat"><svg class="i" viewBox="0 0 24 24"><path d="M4 6a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H9l-4 3v-3.2A2 2 0 0 1 4 12V6ZM17 8h1a2 2 0 0 1 2 2v6a2 2 0 0 1-1 1.7V21l-3-3h-4a2 2 0 0 1-2-1.5"/></svg><span>Chat</span><em id="count-chat"></em></button>
+      <button data-view="board"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="11" rx="1.5"/><rect x="17" y="4" width="4" height="7" rx="1.5"/></svg><span>Tablero</span><em id="count-board"></em></button>
+      <button data-view="providers"><svg class="i" viewBox="0 0 24 24"><path d="M9 3v4M15 3v4M6 7h12v4a6 6 0 0 1-12 0V7ZM12 17v4"/></svg><span>Cuentas y APIs</span><em id="count-providers"></em></button>
+      <button data-view="skills"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l2.2 5.3L20 9l-4.4 3.8L17 18.5 12 15.5l-5 3 1.4-5.7L4 9l5.8-.7L12 3Z"/></svg><span>Skills</span><em id="count-skills"></em></button>
+      <button data-view="vault"><svg class="i" viewBox="0 0 24 24"><path d="M7 11V8a5 5 0 0 1 10 0v3M6 11h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1ZM12 15v2"/></svg><span>Bóveda</span><em id="count-vault"></em></button>
+      <button data-view="design"><svg class="i" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1 0 1.6-.8 1.6-1.6 0-.5-.2-.8-.4-1.1-.3-.3-.4-.6-.4-1.1 0-.9.7-1.6 1.6-1.6H16a5 5 0 0 0 5-5c0-4.1-4-7.6-9-7.6ZM7.5 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM10.5 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM15 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/></svg><span>Diseño</span><em id="count-design"></em></button>
+      <button data-view="map"><svg class="i" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="7" r="2.5"/><circle cx="8" cy="18" r="2.5"/><circle cx="18" cy="17" r="2.5"/><path d="M8.4 6.4 15.5 7M7.2 15.6l-.7-7.1M10.4 17.8l5.1-.6M17.8 9.5l.1 5"/></svg><span>Mapa del proyecto</span></button>
+      <button data-view="messaging"><svg class="i" viewBox="0 0 24 24"><path d="M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-7l-4 3.5V16H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/></svg><span>Mensajería</span><em id="count-messaging"></em></button>
+      <button data-view="monitors"><svg class="i" viewBox="0 0 24 24"><path d="M3 12h4l2-5 4 10 2-5h6"/></svg><span>Monitores</span><em id="count-monitors"></em></button>
+      <button data-view="integrations"><svg class="i" viewBox="0 0 24 24"><path d="M9 3v4M15 3v4M6 7h12v4a6 6 0 0 1-12 0V7ZM12 17v4"/></svg><span>Integraciones</span></button>
+      <button data-view="remote"><svg class="i" viewBox="0 0 24 24"><path d="M8 3h8a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1ZM11 18h2"/></svg><span>Móvil</span><em id="count-remote"></em></button>
+      <button data-view="terms"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3.5"/><path d="m7.5 9 3 3-3 3M13 15h4"/></svg><span>Terminales</span><em id="count-terms" class="badge"></em></button>
+    </nav>
+
+    <div class="side-block" id="side-sessions-wrap">
+      <div class="side-title">Sesiones activas</div>
+      <div id="side-sessions"></div>
+    </div>
+
+    <div class="side-bottom">
+      <div class="side-title">Abrir rápido</div>
+      <div class="quick" id="quick-launch"></div>
+      <div class="side-tools"><button class="btn sm" id="btn-control" title="Sala de control a pantalla completa"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="4" width="8" height="7" rx="1.5"/><rect x="13" y="4" width="8" height="7" rx="1.5"/><rect x="3" y="13" width="8" height="7" rx="1.5"/><rect x="13" y="13" width="8" height="7" rx="1.5"/></svg>Sala de control</button>
+        <button class="btn sm" id="btn-palette" title="Buscar cualquier acción (Ctrl+K)"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg><kbd>Ctrl K</kbd></button></div>
+      <div class="status"><span class="dot ok" id="status-dot"></span><span id="status-text">Servidor en línea</span><span class="mono">v1.1</span></div>
+    </div>
+  </aside>
+
+  <div class="nav-scrim" id="nav-scrim"></div>
+  <main>
+    <header class="mbar">
+      <button class="btn icon" id="m-menu" aria-label="Menú"><svg class="i" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <b id="m-title">Servidores MCP</b>
+      <span class="dot ok" id="m-dot" title="Conexión con el ordenador"></span>
+    </header>
+    <!-- Servidores -->
+    <section id="view-servers" class="view active">
+      <header class="page-head">
+        <div>
+          <h1>Servidores MCP</h1>
+          <p class="sub">Un registro para todos tus agentes. Activa un servidor en un agente y se escribe en su configuración.</p>
+        </div>
+        <div class="actions">
+          <button class="btn" id="btn-import"><svg class="i" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Importar</button>
+          <button class="btn" id="btn-paste"><svg class="i" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5"/></svg>Pegar JSON</button>
+          <button class="btn" id="btn-health" title="Prueba todos los servidores y guarda el resultado en su historial de salud"><svg class="i" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg>Comprobar todos</button>
+          <button class="btn" id="btn-sync"><svg class="i" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8M4 4v4h4M4 13a8 8 0 0 0 14.3 4.9L20 16M20 20v-4h-4"/></svg>Sincronizar</button>
+          <button class="btn primary" id="btn-add"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Añadir servidor</button>
+        </div>
+      </header>
+      <div id="stats" class="stats"></div>
+      <div id="banners"></div>
+      <div id="servers-table"></div>
+      <div id="suggest"></div>
+    </section>
+
+    <!-- Catálogo -->
+    <section id="view-catalog" class="view">
+      <header class="page-head">
+        <div>
+          <h1>Catálogo</h1>
+          <p class="sub" id="catalog-sub">Servidores MCP listos para instalar en todos tus agentes a la vez.</p>
+        </div>
+        <label class="search"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg><input id="catalog-search" placeholder="Buscar servidores…" aria-label="Buscar servidores"></label>
+      </header>
+      <div class="chips" id="catalog-cats"></div>
+      <div id="catalog-grid" class="grid cat"></div>
+    </section>
+
+    <!-- Agentes -->
+    <section id="view-agents" class="view">
+      <header class="page-head">
+        <div>
+          <h1>Agentes</h1>
+          <p class="sub">Ábrelos con tus MCPs conectados, con tu suscripción o con cualquier IA por API.</p>
+        </div>
+        <div class="actions"><button class="btn" id="btn-project-profiles">Perfiles de proyecto</button>
+        <button class="btn" id="btn-refresh-auth"><svg class="i" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8M4 4v4h4M4 13a8 8 0 0 0 14.3 4.9L20 16M20 20v-4h-4"/></svg>Comprobar cuentas</button></div>
+      </header>
+      <div id="agents-grid" class="grid agents"></div>
+      <div id="delegations"></div>
+    </section>
+
+    <!-- Cuentas y APIs -->
+    <section id="view-providers" class="view">
+      <header class="page-head">
+        <div>
+          <h1>Cuentas y APIs</h1>
+          <p class="sub">Usa tus suscripciones en los agentes, o conecta otras IAs por API.</p>
+        </div>
+        <button class="btn primary" id="btn-add-provider"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Añadir proveedor</button>
+      </header>
+      <h2 class="section-title">Suscripciones</h2>
+      <div id="subs" class="grid subs"></div>
+      <h2 class="section-title">Proveedores por API</h2>
+      <div id="providers-list"></div>
+      <h2 class="section-title">Añadir en un clic</h2>
+      <div id="presets" class="grid presets"></div>
+    </section>
+
+    <!-- Skills -->
+    <section id="view-skills" class="view">
+      <header class="page-head">
+        <div>
+          <h1>Skills</h1>
+          <p class="sub">Habilidades en formato <code>SKILL.md</code> desde <a href="https://skills.sh" target="_blank">skills.sh</a>. Se instalan una vez y las usan tus agentes.</p>
+        </div>
+        <label class="search"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg><input id="skills-search" placeholder="Buscar skills: react, pdf, seguridad…" aria-label="Buscar skills"></label>
+      </header>
+      <div class="chips" id="skills-tabs"></div>
+      <div id="skills-body"></div>
+    </section>
+
+    <!-- Bóveda -->
+    <section id="view-vault" class="view"><div id="vault-body"></div></section>
+
+    <!-- Diseño -->
+    <section id="view-design" class="view design"><div id="design-body"></div></section>
+
+    <!-- Mensajería -->
+    <section id="view-messaging" class="view"><div id="messaging-body"></div></section>
+
+    <!-- Móvil -->
+    <section id="view-remote" class="view"><div id="remote-body"></div></section>
+
+    <!-- Funciones ampliadas -->
+    <section id="view-chat" class="view chatv"><div id="chat-body"></div></section>
+    <section id="view-board" class="view"><div id="board-body"></div></section>
+    <section id="view-map" class="view"><div id="map-body"></div></section>
+    <section id="view-monitors" class="view"><div id="monitors-body"></div></section>
+    <section id="view-integrations" class="view"><div id="integrations-body"></div></section>
+
+    <!-- Terminales -->
+    <section id="view-terms" class="view terms">
+      <div id="term-restore"></div>
+      <div class="tabs" id="term-tabs" role="tablist" aria-label="Sesiones"></div>
+      <div class="term-body">
+        <div class="term-host" id="term-host">
+          <div class="empty" id="term-empty">
+            <svg class="i big" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3.5"/><path d="m7.5 9 3 3-3 3M13 15h4"/></svg>
+            <p>No hay terminales abiertas</p>
+            <p class="sub">Abre un agente desde <b>Agentes</b> o desde “Abrir rápido”.</p>
+          </div>
+        </div>
+        <aside class="term-side" id="term-side"></aside>
+      </div>
+      <div class="term-keys" id="term-keys">
+        <div class="tk-row"><button data-k="esc">Esc</button><button data-k="tab">Tab</button><button data-k="up">↑</button><button data-k="down">↓</button><button data-k="left">←</button><button data-k="right">→</button><button data-k="ctrlc">Ctrl+C</button><button data-k="enter">Intro</button></div>
+        <div class="tk-input"><input id="tk-text" class="field" placeholder="Escribe aquí y pulsa Enviar…" autocomplete="off" autocapitalize="off" enterkeyhint="send"><button class="btn primary" id="tk-send">Enviar</button></div>
+      </div>
+      <footer class="term-foot"><span><span class="dot ok"></span> <span id="foot-count">0 sesiones</span></span><span>Ctrl+Mayús+C / V para copiar y pegar · doble clic en una pestaña para renombrarla</span><span class="mono" id="foot-size"></span></footer>
+    </section>
+  </main>
+
+  <div id="modal" class="modal hidden"><div class="modal-box" id="modal-box" role="dialog" aria-modal="true"></div></div>
+  <div id="toasts"></div>
+
+  <script src="/vendor/xterm.js"></script>
+  <script src="/vendor/addon-fit.js"></script>
+  <script src="/vendor/addon-web-links.js"></script>
+  <script src="/app.js"></script>
+  <script src="/vault.js"></script>
+  <script src="/skills.js"></script>
+  <script src="/project-profiles.js"></script>
+  <script src="/messaging.js"></script>
+  <script src="/delegation.js"></script>
+  <script src="/design.js"></script>
+  <script src="/remote.js"></script>
+  <script src="/mcp.js"></script>
+  <script src="/chat.js"></script>
+  <script src="/board.js"></script>
+  <script src="/projmap.js"></script>
+  <script src="/monitors.js"></script>
+  <script src="/integrations.js"></script>
+  <script src="/control.js"></script>
+</body>
+</html>

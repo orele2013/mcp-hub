@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Arranca MCP Hub (si no está corriendo) y lo abre como ventana de aplicación.
+DIR="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
+PORT="${MCP_HUB_PORT:-7777}"
+URL="http://127.0.0.1:$PORT"
+LOG="${XDG_STATE_HOME:-$HOME/.local/state}/mcp-hub.log"
+mkdir -p "$(dirname "$LOG")"
+
+if ! curl -fs -o /dev/null "$URL/icon.svg"; then
+  if command -v systemd-run >/dev/null; then
+    systemd-run --user --collect --quiet --unit=mcp-hub-server --working-directory="$DIR" "$(command -v node)" "$DIR/server.js" 2>>"$LOG"
+  else
+    setsid node "$DIR/server.js" >>"$LOG" 2>&1 < /dev/null &
+  fi
+  for _ in $(seq 1 50); do curl -fs -o /dev/null "$URL/icon.svg" && break; sleep 0.1; done
+fi
+[ "$1" = "--server-only" ] && exit 0
+
+for b in chromium google-chrome-stable brave; do
+  if command -v "$b" >/dev/null; then exec "$b" --app="$URL" --class=mcp-hub --password-store=basic --user-data-dir="$HOME/.config/mcp-hub/browser"; fi
+done
+exec xdg-open "$URL"
