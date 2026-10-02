@@ -11,7 +11,8 @@ import { fileURLToPath } from 'node:url';
 import { WebSocketServer } from 'ws';
 import selfsigned from 'selfsigned';
 import pty from 'node-pty';
-import { IS_WIN, commandLine, terminalShell, openExternalTerminal, openPath, nodeRuntime, expandHome as expandHomeP, dataDir, which as whichP } from './lib/platform.js';
+import { IS_WIN, ensurePtyHelper, commandLine, terminalShell, openExternalTerminal, openPath, nodeRuntime, expandHome as expandHomeP, dataDir, which as whichP } from './lib/platform.js';
+ensurePtyHelper();
 
 // Cuando se lanza desde el menú de apps el PATH es mínimo: usar el de la shell de login.
 if (!IS_WIN) try {

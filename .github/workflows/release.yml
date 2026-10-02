@@ -64,8 +64,7 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - uses: android-actions/setup-android@v3
-
+      # El runner ya trae el SDK de Android (ANDROID_HOME); Gradle descarga lo que falte
       - name: Clave de firma
         env:
           KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}

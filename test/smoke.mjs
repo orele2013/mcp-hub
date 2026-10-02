@@ -38,6 +38,7 @@ if (!PACKAGED) {
   ok('CLI de npm con argumento difícil', !cow.e && cow.out.includes("l'apóstrofo") && cow.out.includes('Línea 2 & | < > ^ % !'), cow.e?.message || cow.out.slice(0, 200));
   // La shell de las terminales ejecuta un comando escrito con commandLine (así se lanzan los agentes)
   const pty = (await import('node-pty')).default;
+  P.ensurePtyHelper();
   const sh = P.terminalShell();
   const line = P.commandLine(['node', '-e', 'console.log("Q_" + (1 + 1) + " it\'s ok")']);
   const out = await new Promise((resolve) => {
