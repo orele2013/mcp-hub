@@ -61,7 +61,7 @@ function miniTerm(s, grid) {
   grid.append(tile);
   const main = terms.get(s.id)?.term;
   const term = new Terminal({ fontFamily: '"Geist Mono Variable", ui-monospace, monospace', fontSize: 11, lineHeight: 1.1, disableStdin: true, cursorBlink: false, scrollback: 2000,
-    cols: main?.cols || 120, rows: main?.rows || 32, theme: { background: '#141413', foreground: '#E9E7E0', cursor: '#141413' } });
+    cols: main?.cols || 120, rows: main?.rows || 32, theme: { background: '#0A0B0E', foreground: '#E6E5DF', cursor: '#0A0B0E' } });
   const box = tile.querySelector('.ctl-term');
   term.open(box);
   // Se escala para que la terminal entera quepa en la tarjeta, con el tamaño real de la sesión

@@ -60,14 +60,13 @@ function logo(key, size = 40, { plain = false, alt = '' } = {}) {
   const d = LOGOS[key] || LOGOS.mcp;
   const r = Math.round(size * 0.28);
   const box = `width:${size}px;height:${size}px;border-radius:${r}px;`;
-  const k = ` data-k="${esc(String(key))}"`;
-  if (d.img) return `<span class="logo${plain ? ' plain' : ''}"${k} style="${box}"><img src="${d.img}" alt="${esc(alt)}" width="${Math.round(size * 0.55)}" height="${Math.round(size * 0.55)}"></span>`;
+  if (d.img) return `<span class="logo${plain ? ' plain' : ''}" style="${box}"><img src="${d.img}" alt="${esc(alt)}" width="${Math.round(size * 0.55)}" height="${Math.round(size * 0.55)}"></span>`;
   if (d.t) {
     const fs = size * (d.t.length > 2 ? 0.3 : 0.36);
-    return `<span class="logo"${k} style="${box}font-size:${fs}px;color:${d.fg};${d.bg ? `background:${d.bg};border-color:${d.bg};` : ''}" ${alt ? `aria-label="${esc(alt)}"` : ''}>${d.t}</span>`;
+    return `<span class="logo" style="${box}font-size:${fs}px;color:${d.fg};${d.bg ? `background:${d.bg};border-color:${d.bg};` : ''}" ${alt ? `aria-label="${esc(alt)}"` : ''}>${d.t}</span>`;
   }
   const custom = d.fg ? `color:${d.fg};background:${d.bg};border-color:${d.line};` : '';
-  return `<span class="logo${d.fg ? '' : ' mine'}"${k} style="${box}${custom}">${svg(d.icon)}</span>`;
+  return `<span class="logo${d.fg ? '' : ' mine'}" style="${box}${custom}">${svg(d.icon)}</span>`;
 }
 const KEYWORDS = [
   ['blender', ['blender']], ['n8n', ['n8n']], ['roblox', ['roblox']], ['playwright', ['playwright']], ['chrome-devtools', ['chrome-devtools']],
@@ -140,13 +139,6 @@ async function refresh() {
 
 // ---------------- Navegación ----------------
 let currentView = 'servers';
-// La cifra de la sección (la misma del índice lateral) va en la esquina de la banda, como el número de colección de una portada
-function syncBand() {
-  const h = document.querySelector('.view.active .page-head'); if (!h) return;
-  const n = document.querySelector(`nav button[data-view="${currentView}"] em`)?.textContent.trim();
-  if (n) h.dataset.count = n; else delete h.dataset.count;
-}
-setInterval(syncBand, 1500);
 function show(view) {
   currentView = view;
   document.body.classList.remove('nav-open');
@@ -155,7 +147,6 @@ function show(view) {
   $$('nav button').forEach((b) => b.classList.toggle('active', b.dataset.view === view));
   $$('.view').forEach((v) => v.classList.toggle('active', v.id === 'view-' + view));
   if (view === 'terms') requestAnimationFrame(fitActive);
-  requestAnimationFrame(syncBand);
   if (view === 'agents' || view === 'providers') loadAuth();
   if (view === 'agents' && typeof loadDelegations === 'function') loadDelegations();
   if (view === 'vault' && typeof loadVault === 'function') loadVault();
@@ -232,7 +223,7 @@ function renderServers() {
       `<span class="col ${c.installed ? '' : 'dim'}" title="${esc(c.configFile)}">${logo(c.id, 18, { plain: true })}${esc(c.name.split(' ')[0])}</span>`).join('')}<span></span></div>`;
     for (const n of names) {
       const s = S.servers[n];
-      h += `<div class="trow" style="${grid}" data-name="${esc(n)}"><div class="srv">${logo(serverKey(n, s), 40)}<div class="meta"><div class="name">${typeof healthDot === 'function' ? healthDot(n) : ''}<span class="nm">${esc(n)}</span><span class="tag ${s.transport}">${s.transport}</span></div><span class="cmd" title="${esc(summary(s))}">${esc(tilde(summary(s)))}</span></div></div>`;
+      h += `<div class="trow" style="${grid}" data-name="${esc(n)}"><div class="srv">${logo(serverKey(n, s), 40)}<div class="meta"><div class="name">${typeof healthDot === 'function' ? healthDot(n) : ''}${esc(n)}<span class="tag ${s.transport}">${s.transport}</span></div><span class="cmd" title="${esc(summary(s))}">${esc(tilde(summary(s)))}</span></div></div>`;
       for (const c of cols) {
         const want = !!s.targets?.[c.id], has = !!c.servers[n];
         h += `<button class="sw ${want !== has && !ignored.has(`${n}|${c.id}`) ? 'mismatch' : ''}" aria-pressed="${want}" aria-label="${esc(n)} en ${esc(c.name)}" data-client="${c.id}"><span class="track"><span class="knob"></span></span></button>`;
@@ -445,7 +436,7 @@ function installCatalog(id) {
 // ---------------- Agentes ----------------
 const AUTH = {
   subscription: { cls: 'ok', icon: 'shield', label: 'Suscripción' },
-  apikey: { cls: '', icon: 'key', label: 'API key' },
+  apikey: { cls: 'warn', icon: 'key', label: 'API key' },
   none: { cls: 'err', icon: null, label: 'Sin sesión' },
   unknown: { cls: '', icon: null, label: null },
 };
@@ -690,7 +681,7 @@ function renderProviders() {
       const local = /localhost|127\.0\.0\.1/.test(host);
       return `<div class="prow" data-id="${esc(id)}">
         <div class="srv">${logo(providerKey(id, p), 40)}<div class="meta"><div class="name">${esc(p.name)}${local ? '<span class="tag local">local</span>' : ''}</div><span class="cmd">${esc(host)}</span></div></div>
-        <span class="mono" style="color:var(--n8)">${p.apiKey ? esc(p.apiKey) : '<span style="color:var(--dim);font-family:var(--sans)">Sin key</span>'}</span>
+        <span class="mono" style="color:var(--text2)">${p.apiKey ? esc(p.apiKey) : '<span style="color:var(--dim);font-family:var(--sans)">Sin key</span>'}</span>
         <div class="compat">${p.compatible.map((c) => `<button class="btn icon xs" style="width:30px" data-use="${c}" aria-label="Abrir con ${esc(clientName(c))}" title="Abrir con ${esc(clientName(c))}">${logo(c, 18, { plain: true })}</button>`).join('')}</div>
         <span class="model ${p.defaultModel ? '' : 'empty'}">${esc(p.defaultModel || 'elige un modelo')}</span>
         <div class="row-actions"><button class="btn sm" data-act="models">${svg('bolt')}Probar</button><button class="btn sm icon" data-act="edit" aria-label="Editar">${svg('edit')}</button><button class="btn sm icon" data-act="del" aria-label="Eliminar">${svg('trash')}</button></div>
@@ -845,9 +836,9 @@ function attach(s) {
   const term = new Terminal({
     fontFamily: '"Geist Mono Variable", "JetBrainsMono Nerd Font", ui-monospace, monospace', fontSize: 13.5, lineHeight: 1.15,
     cursorBlink: true, allowProposedApi: true, scrollback: 10000,
-    theme: { background: '#141413', foreground: '#E9E7E0', cursor: '#E8A21A', cursorAccent: '#141413', selectionBackground: '#4A4740',
+    theme: { background: '#0A0A0A', foreground: '#EDEDEB', cursor: '#FF7A1A', cursorAccent: '#0A0A0A', selectionBackground: '#5E2E0B',
       black: '#1A1D24', brightBlack: '#5C6370', red: '#FF8A8A', green: '#4ADE9A', yellow: '#F5C668', blue: '#6CB6FF',
-      magenta: '#C9A6E8', cyan: '#62D2E0', white: '#D6D8DE', brightWhite: '#FFFFFF' },
+      magenta: '#B3A9FF', cyan: '#62D2E0', white: '#D6D8DE', brightWhite: '#FFFFFF' },
   });
   const fit = new FitAddon.FitAddon();
   term.loadAddon(fit);
@@ -960,3 +951,24 @@ function renderPrevious() {
   $('#pr-x').onclick = async () => { await api('/api/sessions/previous/dismiss', {}); prevSessions = []; renderPrevious(); };
 }
 loadPrevious();
+
+// ---------------- Modo claro / oscuro ----------------
+const THEME_ICONS = {
+  light: '<svg class="i" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>',
+  dark: '<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg>',
+};
+function applyTheme(t, save) {
+  document.documentElement.dataset.theme = t;
+  if (save) try { localStorage.setItem('mcphub-theme', t); } catch {}
+  const b = $('#btn-theme');
+  if (b) { b.innerHTML = THEME_ICONS[t]; b.title = t === 'light' ? 'Pasar a modo oscuro' : 'Pasar a modo claro'; b.setAttribute('aria-label', b.title); }
+  $('meta[name="theme-color"]')?.setAttribute('content', t === 'light' ? '#FFFFFF' : '#0A0A0A');
+}
+function toggleTheme() { applyTheme(document.documentElement.dataset.theme === 'light' ? 'dark' : 'light', true); }
+applyTheme(document.documentElement.dataset.theme || 'dark', false);
+$('#btn-theme')?.addEventListener('click', toggleTheme);
+// Si el usuario no eligió, sigue al sistema
+matchMedia('(prefers-color-scheme: light)').addEventListener?.('change', (e) => {
+  let t; try { t = localStorage.getItem('mcphub-theme'); } catch {}
+  if (t !== 'light' && t !== 'dark') applyTheme(e.matches ? 'light' : 'dark', false);
+});

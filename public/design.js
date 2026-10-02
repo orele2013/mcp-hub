@@ -101,9 +101,8 @@ const KINDS = [
 const kindArt = (k, size = 64) => `<svg class="dz-art" viewBox="0 0 64 60" width="${size}" height="${Math.round(size * 0.94)}" aria-hidden="true">${k.art}</svg>`;
 const MODEL_HINTS = { claude: ['opus', 'sonnet', 'haiku'] };
 
-try { DZ.folded ??= localStorage.getItem('dz-folded') === '1'; } catch { DZ.folded ??= false; }
 DZ.compose ||= { text: '', kind: 'blank', system: '', codebase: '', agent: '', model: '', files: [], tplOpen: true };
-DZ.list ||= { view: 'grid', starred: false, q: '', sort: 'viewed' };
+DZ.list ||= { view: 'list', starred: false, q: '', sort: 'viewed' };
 
 function renderDesignHome() {
   $('#view-design').classList.remove('dz-open');
@@ -113,9 +112,8 @@ function renderDesignHome() {
   const sys = systems.find((s) => s.slug === C.system);
   const kind = KINDS.find((k) => k.id === C.kind) || KINDS[0];
   $('#design-body').innerHTML = `
-    <header class="page-head"><div><h1>Diseño</h1><p class="sub">Prototipos, presentaciones y documentos con cualquier agente, en <code>~/Designs</code>.</p></div></header>
     <div class="dz-home">
-      <h2 class="dz-hero">¿Qué creamos?</h2>
+      <h1 class="dz-hero">¿Qué creamos?</h1>
       <div class="dz-composer ${C.tplOpen ? 'open' : ''}">
         <div class="dz-cbox">
           ${C.files.length ? `<div class="dz-chips">${C.files.map((f, i) => `<span class="dz-chip">${f.type.startsWith('image/') ? `<img src="${f.url}" alt="">` : svg('note')}${esc(f.name.slice(0, 28))}<button data-rmf="${i}" aria-label="Quitar">×</button></span>`).join('')}</div>` : ''}
@@ -267,11 +265,11 @@ function renderDesignList() {
   const star = (p) => `<button class="dz-star ${p.starred ? 'on' : ''}" data-act="star" aria-label="Favorito" title="Favorito">${svg('star')}</button>`;
   const more = `<button class="btn sm icon dz-more" data-act="menu" aria-label="Más opciones">${svg('dots')}</button>`;
   box.innerHTML = (DZ.tab === 'templates' && items.length ? '<h2 class="section-title">Tus plantillas</h2>' : '') + (!items.length ? (DZ.tab === 'templates' ? '' : empty)
-    : DZ.list.view === 'grid' ? `<div class="grid dz-grid">${items.map((p) => `<article class="dz-card" data-slug="${p.slug}" data-agent="${esc(p.agent || '')}">
+    : DZ.list.view === 'grid' ? `<div class="grid dz-grid">${items.map((p) => `<article class="dz-card" data-slug="${p.slug}">
         <div class="dz-thumb"><img src="${thumbUrl(p)}" alt="" onerror="this.remove()">${p.running ? '<span class="pill warn dz-run">Trabajando…</span>' : ''}</div>
         <div class="dz-card-meta"><div><b>${esc(p.name)}</b><small>${esc(typeName(p))} · ${ago(p.viewed || p.updated)}</small></div>${star(p)}${more}</div></article>`).join('')}</div>`
     : `<div class="dz-table"><div class="dz-tr head"><span></span><button data-sort="name">Nombre${DZ.list.sort === 'name' ? ' ↓' : ''}</button><button data-sort="viewed">Última vista${DZ.list.sort === 'viewed' ? ' ↓' : ''}</button><span>Tipo</span><span>Agente</span><span></span><span></span></div>
-        ${items.map((p) => `<div class="dz-tr" data-slug="${p.slug}" data-agent="${esc(p.agent || '')}"><span class="dz-mini"><img src="${thumbUrl(p)}" alt="" onerror="this.remove()"></span>
+        ${items.map((p) => `<div class="dz-tr" data-slug="${p.slug}"><span class="dz-mini"><img src="${thumbUrl(p)}" alt="" onerror="this.remove()"></span>
           <span class="dz-tname">${esc(p.name)}${p.running ? ' <span class="pill warn">Trabajando…</span>' : ''}</span><span class="hint">${ago(p.viewed || p.updated)}</span>
           <span class="hint">${esc(typeName(p))}</span><span class="dz-tagent">${logo(p.agent, 18, { plain: true })}${esc(agentName(p.agent))}</span>${more}${star(p)}</div>`).join('')}</div>`)
     + (DZ.tab === 'templates' && !items.length && !examples ? empty : '') + examples;
@@ -392,7 +390,7 @@ async function openDesign(slug) {
   if (DZ.p.type === 'slides') DZ.zoom = 'fit';
   renderProject();
 }
-function closeDesign() { DZ.slug = null; DZ.p = null; if ($('#m-title')) $('#m-title').textContent = 'Diseño'; loadDesign(); }
+function closeDesign() { DZ.slug = null; DZ.p = null; loadDesign(); }
 async function reloadProject() {
   if (!DZ.slug) return;
   const live = DZ.live;
@@ -403,12 +401,10 @@ async function reloadProject() {
 function renderProject() {
   const p = DZ.p, slides = p.type === 'slides';
   $('#view-design').classList.add('dz-open');
-  if ($('#m-title')) $('#m-title').textContent = p.name; // en el móvil, el nombre va en la barra superior
   $('#design-body').innerHTML = `
-    <div class="dz${DZ.folded ? ' dz-folded' : ''}" data-agent="${esc(p.agent)}">
+    <div class="dz">
       <header class="dz-top">
         <button class="btn icon" id="dz-back" title="Todos los diseños" aria-label="Volver">${svg('back')}</button>
-        <button class="btn icon dz-fold-btn" id="dz-fold" title="Plegar el chat y dar todo el ancho al lienzo" aria-label="Plegar el chat" aria-pressed="${!!DZ.folded}">${svg('back')}</button>
         <input id="dz-name" class="dz-name" value="${esc(p.name)}" aria-label="Nombre del diseño">
         <span class="tag">${DZ_TYPES[p.type] || p.type}</span>
         <button class="btn dz-mtoggle" id="dz-mtoggle" aria-label="Cambiar entre chat y lienzo">${svg('design')}<span>Ver lienzo</span></button>
@@ -430,7 +426,7 @@ function renderProject() {
         <button class="btn primary" id="dz-handoff" title="Pasar a código">${svg('code')}<span class="lbl">Pasar a código</span></button>
       </header>
       <div class="dz-main">
-        <aside class="dz-side" data-spine="${esc(p.name)} · chat">
+        <aside class="dz-side">
           <div class="dz-tabs" role="tablist">${[['chat', 'Chat'], ['comments', 'Comentarios'], ['tweaks', 'Ajustes'], ['versions', 'Versiones']].map(([k, l]) =>
             `<button data-panel="${k}" class="${DZ.panel === k ? 'on' : ''}">${l}${k === 'comments' ? `<em id="dz-ccount"></em>` : ''}</button>`).join('')}</div>
           <div class="dz-panel" id="dz-panel"></div>
@@ -450,14 +446,6 @@ function renderProject() {
     </div>`;
 
   $('#dz-back').onclick = closeDesign;
-  const setFold = (on) => {
-    DZ.folded = on; try { localStorage.setItem('dz-folded', on ? '1' : ''); } catch {}
-    $('.dz').classList.toggle('dz-folded', on); $('#dz-fold').setAttribute('aria-pressed', String(on));
-    $('#dz-fold').title = on ? 'Mostrar el chat' : 'Plegar el chat y dar todo el ancho al lienzo';
-    setTimeout(() => requestAnimationFrame(layoutStage), 230);
-  };
-  $('#dz-fold').onclick = () => setFold(!DZ.folded);
-  $('.dz-side').addEventListener('click', () => { if (DZ.folded) setFold(false); });
   $('#dz-mtoggle').onclick = () => {
     const on = $('.dz').classList.toggle('m-canvas');
     $('#dz-mtoggle span').textContent = on ? 'Ver chat' : 'Ver lienzo';

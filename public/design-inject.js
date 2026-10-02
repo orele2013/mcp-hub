@@ -6,7 +6,7 @@
   const q = new URLSearchParams(location.search);
   const clean = q.has('clean');
   const post = (m) => { if (embedded) window.parent.postMessage({ dz: 1, ...m }, '*'); };
-  const ACCENT = '#8B7CFF';
+  const ACCENT = '#FF7A1A';
   let mode = 'view';
 
   // ---------- Selector estable y descripción de un elemento ----------

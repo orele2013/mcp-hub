@@ -1053,7 +1053,7 @@ async function handle(req, res) {
     catch (e) { send(res, 400, { error: e.message }); }
     return;
   }
-  const fontDir = /^\/vendor\/(geist|geist-mono|cabin)\/(.+)$/.exec(url.pathname);
+  const fontDir = /^\/vendor\/(geist|geist-mono)\/(.+)$/.exec(url.pathname);
   let file = fontDir ? path.join(ROOT, 'node_modules/@fontsource-variable', fontDir[1], path.normalize(fontDir[2]))
     : STATIC[url.pathname] ? path.join(ROOT, STATIC[url.pathname])
     : path.join(ROOT, 'public', url.pathname === '/' ? 'index.html' : path.normalize(url.pathname));
@@ -1167,7 +1167,7 @@ function newDevice(req, res, via) {
   save(); broadcastRemote();
   return `mcphub_dev=${id}.${secret}; Path=/; Max-Age=31536000; HttpOnly; Secure; SameSite=Lax`;
 }
-const PUBLIC = /^\/(manifest\.webmanifest|sw\.js|icon[\w-]*\.(svg|png)|design-inject\.js|style\.css|logos\/[\w.-]+|vendor\/(geist(-mono)?|cabin)\/.+)$/;
+const PUBLIC = /^\/(manifest\.webmanifest|sw\.js|icon[\w-]*\.(svg|png)|design-inject\.js|style\.css|logos\/[\w.-]+|vendor\/geist(-mono)?\/.+)$/;
 // Registro de accesos remotos (útil para diagnosticar y para ver quién entra desde internet). Sin parámetros: no guarda códigos.
 const REMOTE_LOG = path.join(HOME, '.local', 'state', 'mcp-hub-remote.log');
 function logRemote(req, via, res) {
