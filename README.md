@@ -62,6 +62,25 @@ App local para gestionar servidores MCP en todos tus agentes y abrirlos desde un
   - Cada dispositivo se vincula con un QR de un solo uso y recibe su propia cookie (revocable en Móvil → Dispositivos). El token interno nunca sale del ordenador y las rutas de agentes (`/agent/*`) no son accesibles desde fuera.
   - En el móvil: menú lateral desplegable, barra de teclas (Esc, Tab, flechas, Ctrl+C) y caja de texto para las terminales, y Diseño con Chat/Lienzo alternables.
 
+## Instalar
+
+Descarga la última versión desde [Releases](https://github.com/orele2013/mcp-hub/releases/latest):
+
+| Sistema | Archivo |
+|---|---|
+| Windows 10/11 (64 bits) | `MCP-Hub-…-windows-x64-setup.exe` |
+| macOS con chip Apple | `MCP-Hub-…-mac-arm64.dmg` |
+| macOS con Intel | `MCP-Hub-…-mac-x64.dmg` |
+| Linux (64 bits) | `MCP-Hub-…-linux-x86_64.AppImage` |
+| Android (mando a distancia) | `MCP-Hub-…-android.apk` |
+
+Las apps de escritorio traen su propio Node: solo necesitas los agentes que quieras usar. No están firmadas con un certificado de pago:
+en Windows pulsa **Más información → Ejecutar de todas formas**; en macOS, **clic derecho → Abrir** (o `xattr -cr "/Applications/MCP Hub.app"`).
+En Windows las terminales usan PowerShell. La app de Android se conecta a MCP Hub de tu ordenador (Móvil → Vincular dispositivo); ver [android/README.md](android/README.md).
+
+Desde el código: `npm install && npm start`, o `npm run app` para la ventana de escritorio. Para publicar una versión nueva, sube la etiqueta
+(`git tag v1.0.1 && git push origin v1.0.1`): GitHub Actions construye y prueba las cinco descargas en cada sistema y crea la release (`.github/workflows/release.yml`).
+
 ## Uso
 
     mcp-hub                 # arranca el servidor (si hace falta) y abre la ventana

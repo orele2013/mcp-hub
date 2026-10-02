@@ -73,9 +73,11 @@ async function testServer(sc) {
   const srv = spawn(sc.cmd, sc.args, { env, stdio: ['ignore', 'pipe', 'pipe'] });
   let log = '';
   srv.stdout.on('data', (d) => { log += d; }); srv.stderr.on('data', (d) => { log += d; });
-  let up = false;
-  for (let i = 0; i < 100 && !up; i++) { await sleep(300); up = await fetch(`http://127.0.0.1:${PORT}/icon.svg`).then((r) => r.ok).catch(() => false); }
-  ok(`servidor arranca${sc.label}`, up, up ? '' : log.slice(-800));
+  let up = false, exit = null;
+  srv.on('exit', (code, signal) => { exit = `terminó con código ${code}${signal ? ` (${signal})` : ''}`; });
+  // Hasta 2 min: la versión Intel en un Mac con chip Apple pasa antes por Rosetta, que tarda la primera vez
+  for (let i = 0; i < 400 && !up && !exit; i++) { await sleep(300); up = await fetch(`http://127.0.0.1:${PORT}/icon.svg`).then((r) => r.ok).catch(() => false); }
+  ok(`servidor arranca${sc.label}`, up, up ? '' : `${exit || 'no responde'} · ${log.slice(-800)}`);
   if (up) {
     const T = fs.readFileSync(path.join(home, '.config', 'mcp-hub', 'ui-token'), 'utf8').trim();
     const api = (p, body) => fetch(`http://127.0.0.1:${PORT}${p}`, { method: body ? 'POST' : 'GET', headers: { 'x-token': T, 'content-type': 'application/json' }, body: body ? JSON.stringify(body) : undefined }).then((r) => r.json());
