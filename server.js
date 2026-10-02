@@ -13,6 +13,9 @@ import selfsigned from 'selfsigned';
 import pty from 'node-pty';
 import { IS_WIN, ensurePtyHelper, commandLine, terminalShell, openExternalTerminal, openPath, nodeRuntime, expandHome as expandHomeP, dataDir, which as whichP } from './lib/platform.js';
 ensurePtyHelper();
+// Un error suelto (p. ej. un corte de red en un canal de mensajería) se registra, pero no cierra el servidor ni las terminales
+process.on('uncaughtException', (e) => console.error('[error no capturado]', e));
+process.on('unhandledRejection', (e) => console.error('[promesa rechazada]', e));
 
 // Cuando se lanza desde el menú de apps el PATH es mínimo: usar el de la shell de login.
 if (!IS_WIN) try {
@@ -1133,6 +1136,7 @@ const LAN_PORT = Number(process.env.MCP_HUB_LAN_PORT || 7778), TS_PORT = Number(
 const TS_HTTPS_PORT = Number(process.env.MCP_HUB_TS_HTTPS_PORT || 8443);
 const TLS_DIR = path.join(CONF_DIR, 'tls');
 const pairCodes = new Map();
+const usedPairCodes = new Map(); // código → { ip, at } de los recién usados
 const sha = (x) => crypto.createHash('sha256').update(x).digest('hex');
 const lanIps = () => Object.entries(os.networkInterfaces())
   .filter(([n]) => !/^(lo|docker|br-|veth|virbr|tailscale|tun|wg)/.test(n))
@@ -1174,8 +1178,8 @@ function deviceFrom(req) {
   return { id: m[1], ...d };
 }
 const PAGE = (title, body) => `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title>
-<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0A0B0E;color:#EEEDE8;font:16px/1.5 system-ui,sans-serif;padding:24px;box-sizing:border-box}
-.b{max-width:420px;text-align:center}img{width:64px;height:64px}h1{font-size:22px;margin:16px 0 8px}p{color:#9A9FAA}b{color:#C9C2FF}</style></head><body><div class="b"><img src="/icon.svg" alt="">${body}</div></body></html>`;
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0A0A0A;color:#F5F5F4;font:16px/1.5 system-ui,sans-serif;padding:24px;box-sizing:border-box}
+.b{max-width:420px;text-align:center}img{width:64px;height:64px}h1{font-size:22px;margin:16px 0 8px}p{color:#A3A3A1}b{color:#FFA261}</style></head><body><div class="b"><img src="/icon.svg" alt="">${body}</div></body></html>`;
 // Contraseña para entrar por Tailscale (se pide la primera vez en cada dispositivo)
 const hashPass = (pw, salt) => crypto.scryptSync(String(pw), Buffer.from(salt, 'hex'), 32).toString('hex');
 const checkPass = (pw) => { const p = db.remote.pass; if (!p) return false; const h = hashPass(pw, p.salt); return crypto.timingSafeEqual(Buffer.from(h), Buffer.from(p.hash)); };
@@ -1184,8 +1188,8 @@ const loginFails = new Map();
 const globalFails = { n: 0, since: Date.now(), until: 0 };
 const LOGIN_PAGE = (msg = '') => PAGE('Entrar en MCP Hub', `<h1>MCP Hub</h1><p>Escribe la contraseña de acceso para vincular este dispositivo. Solo se pide la primera vez.</p>
 <form id="f" style="display:flex;flex-direction:column;gap:12px;margin-top:18px">
-<input id="p" type="password" autocomplete="current-password" placeholder="Contraseña" required style="height:48px;border-radius:12px;border:1px solid #2C303B;background:#111318;color:#EEEDE8;padding:0 14px;font-size:16px">
-<button style="height:48px;border:0;border-radius:12px;background:#8B7CFF;color:#0C0B14;font-size:16px;font-weight:600">Entrar</button>
+<input id="p" type="password" autocomplete="current-password" placeholder="Contraseña" required style="height:48px;border-radius:12px;border:1px solid #333333;background:#131313;color:#F5F5F4;padding:0 14px;font-size:16px">
+<button style="height:48px;border:0;border-radius:12px;background:#FF7A1A;color:#0A0A0A;font-size:16px;font-weight:600">Entrar</button>
 <p id="e" style="color:#FF9A9A;min-height:20px;margin:0">${msg}</p></form>
 <script>document.getElementById('f').onsubmit=async(ev)=>{ev.preventDefault();const r=await fetch('/login',{method:'POST',headers:{'content-type':'application/json','x-login':'1'},body:JSON.stringify({password:document.getElementById('p').value})});
 if(r.ok)location.replace('/');else{const j=await r.json().catch(()=>({}));document.getElementById('e').textContent=j.error||'No se pudo entrar';}};document.getElementById('p').focus();</script>`);
@@ -1244,6 +1248,10 @@ function remoteHandler(via) {
     if (url.pathname === '/pair') {
       const code = url.searchParams.get('c') || '', p = pairCodes.get(code);
       pairCodes.delete(code);
+      // El mismo código otra vez desde la misma IP al momento (doble toque en «Conectar»): ya está vinculado, solo entra
+      const ip = req.socket.remoteAddress, used = usedPairCodes.get(code);
+      if (!p && used && used.ip === ip && Date.now() - used.at < 30000) { res.writeHead(302, { location: '/' }); return res.end(); }
+      if (p) { usedPairCodes.set(code, { ip, at: Date.now() }); for (const [c, u] of usedPairCodes) if (Date.now() - u.at > 30000) usedPairCodes.delete(c); }
       if (!p || p.expires < Date.now()) {
         res.writeHead(400, { 'content-type': 'text/html; charset=utf-8' });
         return res.end(PAGE('Código caducado', '<h1>Este código ya no vale</h1><p>Genera uno nuevo en el ordenador: MCP Hub → <b>Móvil</b> → Vincular dispositivo.</p>'));
