@@ -34,7 +34,7 @@ async function refreshControl() {
   const ids = new Set(d.sessions.map((s) => s.id));
   for (const [id, t] of CTL.terms) if (!ids.has(id)) { try { t.ws.close(); t.term.dispose(); } catch {} t.tile.remove(); CTL.terms.delete(id); }
   for (const s of d.sessions) if (!CTL.terms.has(s.id)) miniTerm(s, grid);
-  for (const s of d.sessions) { const t = CTL.terms.get(s.id); if (t) t.tile.querySelector('.ctl-title').textContent = sessionLabel(s); }
+  for (const s of d.sessions) { const t = CTL.terms.get(s.id); if (t) t.tile.querySelector('.ctl-title').innerHTML = sessionLabel(s); }
   grid.classList.toggle('empty', !d.sessions.length);
   if (!d.sessions.length && !grid.querySelector('.empty')) grid.innerHTML = '<div class="empty"><p>No hay terminales abiertas.</p></div>';
   else grid.querySelector('.empty')?.remove();
@@ -61,7 +61,7 @@ function miniTerm(s, grid) {
   grid.append(tile);
   const main = terms.get(s.id)?.term;
   const term = new Terminal({ fontFamily: '"Geist Mono Variable", ui-monospace, monospace', fontSize: 11, lineHeight: 1.1, disableStdin: true, cursorBlink: false, scrollback: 2000,
-    cols: main?.cols || 120, rows: main?.rows || 32, theme: { background: '#0A0B0E', foreground: '#E6E5DF', cursor: '#0A0B0E' } });
+    cols: main?.cols || 120, rows: main?.rows || 32, theme: { background: '#141413', foreground: '#E9E7E0', cursor: '#141413' } });
   const box = tile.querySelector('.ctl-term');
   term.open(box);
   // Se escala para que la terminal entera quepa en la tarjeta, con el tamaño real de la sesión
@@ -92,7 +92,7 @@ function paletteItems() {
   items.push({ group: 'Acciones', label: 'Añadir servidor MCP', run: () => { show('servers'); setTimeout(() => $('#btn-add')?.click(), 200); } });
   items.push({ group: 'Acciones', label: 'Comprobar la salud de todos los MCP', run: () => { show('servers'); setTimeout(() => $('#btn-health')?.click(), 200); } });
   for (const c of (S.clients || []).filter((x) => x.installed)) items.push({ group: 'Abrir agente', label: `Abrir ${c.name}`, run: () => launchSheet(c.id) });
-  for (const s of S.sessions || []) if (!s.exited) items.push({ group: 'Terminales', label: sessionLabel(s), hint: tilde(s.cwd), run: () => { activeId = s.id; show('terms'); syncTabs(); } });
+  for (const s of S.sessions || []) if (!s.exited) items.push({ group: 'Terminales', label: s.title, hint: tilde(s.cwd), run: () => { activeId = s.id; show('terms'); syncTabs(); } });
   for (const p of (typeof DZ !== 'undefined' ? DZ.projects || [] : []).slice(0, 30)) items.push({ group: 'Diseños', label: p.name, run: () => { show('design'); setTimeout(() => openDesign(p.slug), 200); } });
   for (const sc of (typeof SCHED !== 'undefined' ? SCHED : [])) items.push({ group: 'Tareas programadas', label: `Lanzar ahora: ${sc.name}`, run: async () => { try { await api('/api/schedules/run', { id: sc.id }); toast('Lanzada'); } catch (e) { toast(e.message, true); } } });
   for (const r of (typeof RECIPES !== 'undefined' ? RECIPES : [])) items.push({ group: 'Recetas', label: `Repetir: ${r.name}`, run: () => { show('agents'); setTimeout(() => runRecipe(r), 400); } });
@@ -167,7 +167,7 @@ window.bindSideExtras = (s) => {
   $('#term-side [data-shadow="off"]')?.addEventListener('click', async () => { await api('/api/shadow/set', { session: s.id, enabled: false }); loadShadow(); });
   $('#term-side [data-shadow="on"]')?.addEventListener('click', () => {
     const ag = (S.clients || []).filter((c) => c.installed);
-    modal(`<div class="mhead"><div><small>Agente sombra</small><h2>Vigilar "${esc(sessionLabel(s))}"</h2></div></div>
+    modal(`<div class="mhead"><div><small>Agente sombra</small><h2>Vigilar "${esc(s.title)}"</h2></div></div>
       <div class="form"><div class="row"><label>Agente<select id="sh-agent" class="field">${ag.map((c) => `<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select></label>
         <label>Modelo<input id="sh-model" class="field mono" value="haiku"></label><label>Cada (min)<input id="sh-every" class="field" type="number" min="2" value="5"></label></div>
       <span class="hint">Solo se consulta al agente si la pantalla cambió desde la última vez. Con Claude, "haiku" es lo más barato. Los avisos aparecen aquí, en la Sala de control y por Mensajería (si activas "Avisos del agente sombra").</span></div>

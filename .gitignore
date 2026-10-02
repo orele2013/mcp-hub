@@ -3,3 +3,6 @@ node_modules/
 *.bak
 *.tmp
 .env
+.impeccable/review/
+.impeccable/mocks/
+.impeccable/config.local.json

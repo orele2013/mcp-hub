@@ -1,0 +1,106 @@
+{
+  "title": "Elige el mundo visual de MCP Hub (segunda mano)",
+  "question": "El sorteo asignó «Serie de bolsillo con código de color». Quédatelo, elige una alternativa o vuelve a sortear.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Serie de bolsillo con código de color",
+      "kicker": "THE ROLL",
+      "lineage": "Penguin Books: portada de tres bandas (1935) y retícula Marber (1961)",
+      "thesis": "Cada agente es una colección con su color, como las series de bolsillo; cada vista es una portada de tres bandas y los proyectos se ordenan como lomos en una estantería.",
+      "palette": ["#F2F0EA", "#161616", "#EE7623", "#1E8C5A", "#2D5DA8", "#7B4FA0"],
+      "materials": ["cartulina de bolsillo", "bandas de color plano", "sans de rotulación geométrica-humanista", "filetes horizontales gruesos"],
+      "viewport": "Servidores MCP como portada: banda superior negra con el nombre de la sección y sus cifras, panel central claro con la tabla densa de siempre, banda inferior con acciones; las columnas de agentes llevan el color de su colección. Mismo menú lateral, mismo orden.",
+      "risk": "Con tantas bandas puede parecer una editorial y no una herramienta si la tabla pierde densidad; los colores de agente deben ser lo único que tiñe.",
+      "raised": [
+        {"from": "operate-b-exposure-record-zone-sheets", "raise": "Los neutros salen de una escala fija de 11 pasos; ningún gris fuera de ella."},
+        {"from": "digital-design-canon-monochrome-product-marketing", "raise": "Cada estado lleva su prueba al lado: un encargo «hecho» enseña su diff o su salida, no solo la etiqueta."},
+        {"from": "pop-culture-shelf-vertical-video-feed-surface", "raise": "En Diseño el lienzo ocupa toda la pantalla y la interfaz se pliega a un lomo."},
+        {"from": "notation-diagram-systems-orienteering-map", "raise": "Un color reservado solo para lo que está en marcha ahora mismo."}
+      ]
+    },
+    {
+      "id": "model-pick",
+      "label": "Electrónica de Dieter Rams",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "Braun ET66, T3 y la disciplina de «menos, pero mejor»",
+      "thesis": "La app como un aparato bien hecho: superficies grises, teclas con un código de color para lo que actúa y lectura numérica exacta.",
+      "palette": ["#E7E5E0", "#BFBDB8", "#2B2B2B", "#3E8E41", "#E8A33B"],
+      "materials": ["plástico gris mate", "teclas cóncavas", "serigrafía fina"],
+      "viewport": "Servidores MCP como un panel frontal: rejilla de interruptores por agente, lecturas en cifras tabulares, la acción principal como la única tecla de color.",
+      "risk": "Es la estética «producto bien hecho» que adopta medio mundo dev (Teenage Engineering y compañía); puede quedarse en lo conocido."
+    },
+    {
+      "id": "challenger-ticketwallet",
+      "label": "Cartera de billetes de avión",
+      "verdict": "competitive",
+      "lineage": "Billetes de aerolínea de la era del jet, con cupones de calco",
+      "thesis": "Cada encargo es un cupón: se valida, se usa o se anula con sello, y nada desaparece.",
+      "palette": ["#FFFFFF", "#14285C", "#C8202F", "#6A3D8F"],
+      "materials": ["cartulina de cupón", "calco morado", "sello rojo VOID"],
+      "viewport": "Agentes → Encargos como talonario: cada encargo un cupón con agente, carpeta y estado sellado.",
+      "case": "Muy claro para el ciclo de vida de encargos; menos para configurar MCPs o la Bóveda.",
+      "risk": "Fuera de los encargos el talonario se vuelve disfraz.",
+      "hero": "https://impeccable.style/worlds/cards/vernacular-ephemera-jet-age-ticket-wallet-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/vernacular-ephemera-jet-age-ticket-wallet.webp"
+    },
+    {
+      "id": "challenger-saville",
+      "label": "Catálogo de discográfica industrial",
+      "verdict": "competitive",
+      "lineage": "Factory Records y Peter Saville",
+      "thesis": "Todo lleva número de catálogo (como los ids de encargo); fondo negro mate y gráficas de líneas blancas con datos reales.",
+      "palette": ["#0D0D0D", "#F5F5F5", "#E2382A", "#F2C230", "#2F6FB5"],
+      "materials": ["negro mate", "filetes blancos", "tiras de color codificadas"],
+      "viewport": "Servidores MCP como índice de catálogo: cada servidor con su número y una línea de latencia en blanco.",
+      "case": "Los desarrolladores lo reconocen y es nada genérico; los nombres en código cuestan al operar deprisa.",
+      "risk": "Codificar etiquetas en color choca con la claridad que pide una herramienta.",
+      "hero": "https://impeccable.style/worlds/cards/brand-identity-canon-saville-catalog-sleeve-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/brand-identity-canon-saville-catalog-sleeve.webp"
+    },
+    {
+      "id": "challenger-exposure", "label": "Ficha de exposición de cuarto oscuro", "verdict": "declined",
+      "lineage": "Registros de positivado", "thesis": "Hojas translúcidas superpuestas con densidades de trama.",
+      "palette": ["#1A1A1A", "#8C8C8C", "#F0F0F0", "#C2187E"], "materials": ["papel vegetal", "trama"],
+      "viewport": "Vistas como hojas apiladas.", "risk": "Hermético para quien no revela fotos.",
+      "case": "Pierde en ambos ejes.", "kept": "Escala tonal fija de 11 pasos.",
+      "hero": "https://impeccable.style/worlds/cards/operate-b-exposure-record-zone-sheets-hero.webp"
+    },
+    {
+      "id": "challenger-monomarketing", "label": "Web de producto monocroma", "verdict": "declined",
+      "lineage": "Webs de software", "thesis": "Escala neutra con un acento y pruebas junto a cada frase.",
+      "palette": ["#FAFAFA", "#111111", "#5B5BD6"], "materials": ["degradados suaves", "capturas"],
+      "viewport": "Afirmación y prueba alternas.", "risk": "Genérico: justo lo que no quieres.",
+      "case": "Pierde en ambos ejes para una app de trabajo.", "kept": "Cada estado acompañado de su prueba.",
+      "hero": "https://impeccable.style/worlds/cards/digital-design-canon-monochrome-product-marketing-hero.webp"
+    },
+    {
+      "id": "challenger-feed", "label": "Feed vertical a pantalla completa", "verdict": "declined",
+      "lineage": "Apps de vídeo vertical", "thesis": "Un elemento ocupa toda la pantalla.",
+      "palette": ["#000000", "#FFFFFF"], "materials": ["vídeo a sangre", "glifos blancos"],
+      "viewport": "Un elemento por pantalla.", "risk": "Quita densidad.",
+      "case": "Pierde en ambos ejes salvo en Diseño.", "kept": "En Diseño el lienzo lo ocupa todo.",
+      "hero": "https://impeccable.style/worlds/cards/pop-culture-shelf-vertical-video-feed-surface-hero.webp"
+    },
+    {
+      "id": "challenger-orienteering", "label": "Mapa de orientación", "verdict": "declined",
+      "lineage": "Mapas ISOM", "thesis": "El recorrido en morado sobre un terreno fijo.",
+      "palette": ["#FFFFFF", "#A0522D", "#F7D23E", "#8E2C8E"], "materials": ["curvas de nivel", "tintas ISOM"],
+      "viewport": "La configuración como terreno y la actividad encima.", "risk": "Nadie configura MCPs con brújula.",
+      "case": "Pierde en ambos ejes.", "kept": "Un color reservado para lo que está en marcha.",
+      "hero": "https://impeccable.style/worlds/cards/notation-diagram-systems-orienteering-map-hero.webp"
+    }
+  ],
+  "reroll": {"registers": ["safer", "bolder"]},
+  "buildPath": {"value": "code", "toggle": false},
+  "canon": true,
+  "canonCard": {
+    "label": "El estándar de la categoría",
+    "thesis": "Panel oscuro de herramienta para desarrolladores, ejecutado con el máximo cuidado.",
+    "palette": ["#0B0C0E", "#16181D", "#E6E7EA", "#7C5CFF"],
+    "materials": ["superficies oscuras escalonadas", "bordes de 1 px", "un acento"],
+    "viewport": "La disposición que esperas de Linear o Vercel, a máxima calidad.",
+    "risk": "Indistinguible de la competencia por diseño, y muy cerca de lo que ya tienes."
+  },
+  "steer": true
+}

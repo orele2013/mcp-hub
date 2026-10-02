@@ -1,0 +1,679 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-02T12:10:52.160Z",
+  "title": "Design System: MCP Hub",
+  "extensions": {
+    "colorMeta": {
+      "cover-white": {
+        "role": "neutral",
+        "displayName": "Cover White",
+        "canonical": "#FCFCFA",
+        "cssVar": "--n0",
+        "tonalRamp": [
+          "#141413",
+          "#262522",
+          "#3D3B36",
+          "#57544D",
+          "#6F6C64",
+          "#A29E94",
+          "#DCDAD3",
+          "#FCFCFA"
+        ]
+      },
+      "stock": {
+        "role": "neutral",
+        "displayName": "Stock",
+        "canonical": "#F4F3EF",
+        "cssVar": "--n1",
+        "tonalRamp": [
+          "#141413",
+          "#262522",
+          "#3D3B36",
+          "#57544D",
+          "#6F6C64",
+          "#A29E94",
+          "#DCDAD3",
+          "#FCFCFA"
+        ]
+      },
+      "index-tab": {
+        "role": "neutral",
+        "displayName": "Index Tab",
+        "canonical": "#EAE9E3",
+        "cssVar": "--n2",
+        "tonalRamp": [
+          "#141413",
+          "#262522",
+          "#3D3B36",
+          "#57544D",
+          "#6F6C64",
+          "#A29E94",
+          "#DCDAD3",
+          "#FCFCFA"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#DCDAD3",
+        "cssVar": "--n3",
+        "tonalRamp": [
+          "#141413",
+          "#262522",
+          "#3D3B36",
+          "#57544D",
+          "#6F6C64",
+          "#A29E94",
+          "#DCDAD3",
+          "#FCFCFA"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Rule",
+        "canonical": "#C4C1B8",
+        "cssVar": "--n4",
+        "tonalRamp": [
+          "#141413",
+          "#262522",
+          "#3D3B36",
+          "#57544D",
+          "#6F6C64",
+          "#A29E94",
+          "#DCDAD3",
+          "#FCFCFA"
+        ]
+      },
+      "stone": {
+        "role": "neutral",
+        "displayName": "Stone",
+        "canonical": "#A29E94",
+        "cssVar": "--n5",
+        "tonalRamp": [
+          "#141413",
+          "#262522",
+          "#3D3B36",
+          "#57544D",
+          "#6F6C64",
+          "#A29E94",
+          "#DCDAD3",
+          "#FCFCFA"
+        ]
+      },
+      "pencil": {
+        "role": "neutral",
+        "displayName": "Pencil",
+        "canonical": "#6F6C64",
+        "cssVar": "--n6",
+        "tonalRamp": [
+          "#141413",
+          "#262522",
+          "#3D3B36",
+          "#57544D",
+          "#6F6C64",
+          "#A29E94",
+          "#DCDAD3",
+          "#FCFCFA"
+        ]
+      },
+      "muted-ink": {
+        "role": "neutral",
+        "displayName": "Muted Ink",
+        "canonical": "#57544D",
+        "cssVar": "--n7",
+        "tonalRamp": [
+          "#141413",
+          "#262522",
+          "#3D3B36",
+          "#57544D",
+          "#6F6C64",
+          "#A29E94",
+          "#DCDAD3",
+          "#FCFCFA"
+        ]
+      },
+      "graphite": {
+        "role": "neutral",
+        "displayName": "Graphite",
+        "canonical": "#3D3B36",
+        "cssVar": "--n8",
+        "tonalRamp": [
+          "#141413",
+          "#262522",
+          "#3D3B36",
+          "#57544D",
+          "#6F6C64",
+          "#A29E94",
+          "#DCDAD3",
+          "#FCFCFA"
+        ]
+      },
+      "band-raised": {
+        "role": "neutral",
+        "displayName": "Band Raised",
+        "canonical": "#262522",
+        "cssVar": "--n9",
+        "tonalRamp": [
+          "#141413",
+          "#262522",
+          "#3D3B36",
+          "#57544D",
+          "#6F6C64",
+          "#A29E94",
+          "#DCDAD3",
+          "#FCFCFA"
+        ]
+      },
+      "ink": {
+        "role": "primary",
+        "displayName": "Press Ink",
+        "canonical": "#141413",
+        "cssVar": "--n10",
+        "tonalRamp": [
+          "#141413",
+          "#262522",
+          "#3D3B36",
+          "#57544D",
+          "#6F6C64",
+          "#A29E94",
+          "#DCDAD3",
+          "#FCFCFA"
+        ]
+      },
+      "series-claude": {
+        "role": "secondary",
+        "displayName": "Claude Orange",
+        "canonical": "oklch(63.1% 0.169 45.1)",
+        "cssVar": "--claude",
+        "tonalRamp": [
+          "oklch(15% 0.140 45.1)",
+          "oklch(25% 0.140 45.1)",
+          "oklch(35% 0.140 45.1)",
+          "oklch(48% 0.140 45.1)",
+          "oklch(60% 0.140 45.1)",
+          "oklch(72% 0.140 45.1)",
+          "oklch(84% 0.050 45.1)",
+          "oklch(95% 0.050 45.1)"
+        ]
+      },
+      "series-codex": {
+        "role": "secondary",
+        "displayName": "Codex Green",
+        "canonical": "oklch(51.6% 0.109 158.0)",
+        "cssVar": "--codex",
+        "tonalRamp": [
+          "oklch(15% 0.109 158.0)",
+          "oklch(25% 0.109 158.0)",
+          "oklch(35% 0.109 158.0)",
+          "oklch(48% 0.109 158.0)",
+          "oklch(60% 0.109 158.0)",
+          "oklch(72% 0.109 158.0)",
+          "oklch(84% 0.050 158.0)",
+          "oklch(95% 0.050 158.0)"
+        ]
+      },
+      "series-gemini": {
+        "role": "secondary",
+        "displayName": "Gemini Blue",
+        "canonical": "oklch(48.0% 0.134 259.5)",
+        "cssVar": "--gemini",
+        "tonalRamp": [
+          "oklch(15% 0.134 259.5)",
+          "oklch(25% 0.134 259.5)",
+          "oklch(35% 0.134 259.5)",
+          "oklch(48% 0.134 259.5)",
+          "oklch(60% 0.134 259.5)",
+          "oklch(72% 0.134 259.5)",
+          "oklch(84% 0.050 259.5)",
+          "oklch(95% 0.050 259.5)"
+        ]
+      },
+      "series-opencode": {
+        "role": "secondary",
+        "displayName": "OpenCode Purple",
+        "canonical": "oklch(48.6% 0.124 300.2)",
+        "cssVar": "--opencode",
+        "tonalRamp": [
+          "oklch(15% 0.124 300.2)",
+          "oklch(25% 0.124 300.2)",
+          "oklch(35% 0.124 300.2)",
+          "oklch(48% 0.124 300.2)",
+          "oklch(60% 0.124 300.2)",
+          "oklch(72% 0.124 300.2)",
+          "oklch(84% 0.050 300.2)",
+          "oklch(95% 0.050 300.2)"
+        ]
+      },
+      "series-cursor": {
+        "role": "secondary",
+        "displayName": "Cursor Slate",
+        "canonical": "oklch(43.0% 0.015 259.8)",
+        "cssVar": "--cursor",
+        "tonalRamp": [
+          "oklch(15% 0.015 259.8)",
+          "oklch(25% 0.015 259.8)",
+          "oklch(35% 0.015 259.8)",
+          "oklch(48% 0.015 259.8)",
+          "oklch(60% 0.015 259.8)",
+          "oklch(72% 0.015 259.8)",
+          "oklch(84% 0.015 259.8)",
+          "oklch(95% 0.015 259.8)"
+        ]
+      },
+      "lamp": {
+        "role": "tertiary",
+        "displayName": "Lamp Ochre",
+        "canonical": "oklch(67.9% 0.142 76.5)",
+        "cssVar": "--live (aliased by --warn)",
+        "tonalRamp": [
+          "oklch(15% 0.140 76.5)",
+          "oklch(25% 0.140 76.5)",
+          "oklch(35% 0.140 76.5)",
+          "oklch(48% 0.140 76.5)",
+          "oklch(60% 0.140 76.5)",
+          "oklch(72% 0.140 76.5)",
+          "oklch(84% 0.050 76.5)",
+          "oklch(95% 0.050 76.5)"
+        ]
+      },
+      "lamp-wash": {
+        "role": "tertiary",
+        "displayName": "Lamp Wash",
+        "canonical": "#FBF0D2",
+        "cssVar": "--live-bg"
+      },
+      "lamp-line": {
+        "role": "tertiary",
+        "displayName": "Lamp Line",
+        "canonical": "#E8CF8C",
+        "cssVar": "--live-line"
+      },
+      "lamp-text": {
+        "role": "tertiary",
+        "displayName": "Lamp Text",
+        "canonical": "#7A5400",
+        "cssVar": "--warn-text"
+      },
+      "advisory-wash": {
+        "role": "tertiary",
+        "displayName": "Advisory Wash",
+        "canonical": "#FBF1DA",
+        "cssVar": "--warn-bg"
+      },
+      "advisory-line": {
+        "role": "tertiary",
+        "displayName": "Advisory Line",
+        "canonical": "#E3C987",
+        "cssVar": "--warn-line"
+      },
+      "corrector": {
+        "role": "tertiary",
+        "displayName": "Corrector Red",
+        "canonical": "oklch(54.1% 0.186 27.5)",
+        "cssVar": "--err",
+        "tonalRamp": [
+          "oklch(15% 0.140 27.5)",
+          "oklch(25% 0.140 27.5)",
+          "oklch(35% 0.140 27.5)",
+          "oklch(48% 0.140 27.5)",
+          "oklch(60% 0.140 27.5)",
+          "oklch(72% 0.140 27.5)",
+          "oklch(84% 0.050 27.5)",
+          "oklch(95% 0.050 27.5)"
+        ]
+      },
+      "corrector-text": {
+        "role": "tertiary",
+        "displayName": "Corrector Text",
+        "canonical": "#A3221D",
+        "cssVar": "--err-text"
+      },
+      "corrector-wash": {
+        "role": "tertiary",
+        "displayName": "Corrector Wash",
+        "canonical": "#FBE6E3",
+        "cssVar": "--err-bg"
+      },
+      "corrector-line": {
+        "role": "tertiary",
+        "displayName": "Corrector Line",
+        "canonical": "#EBB3AD",
+        "cssVar": "--err-line"
+      },
+      "terminal-text": {
+        "role": "neutral",
+        "displayName": "Terminal Text",
+        "canonical": "#E9E7E0",
+        "cssVar": "--term-text"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Band Title",
+        "purpose": "Section name in the black title band, uppercase."
+      },
+      "band-numeral": {
+        "displayName": "Band Numeral",
+        "purpose": "Section count in the band corner (data-count), desktop only."
+      },
+      "headline": {
+        "displayName": "Ledger Figure",
+        "purpose": "Stat figures in the ruled ledger; 24px on phones."
+      },
+      "title": {
+        "displayName": "Sheet Title",
+        "purpose": "Modal and sheet titles; helper line goes beneath."
+      },
+      "row-title": {
+        "displayName": "Row Title",
+        "purpose": "Server names and card heads."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running text; root size 14px."
+      },
+      "body-control": {
+        "displayName": "Control",
+        "purpose": "Buttons, nav items, inputs."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Tracked caps over section rules, board heads, sidebar groups; uppercase."
+      },
+      "label-table": {
+        "displayName": "Table Label",
+        "purpose": "Table headers and ledger captions; uppercase."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Commands, paths, addresses, nav counts, kbd."
+      }
+    },
+    "shadows": [
+      {
+        "name": "float",
+        "value": "0 1px 2px rgba(20,20,19,.06), 0 8px 24px rgba(20,20,19,.10)",
+        "purpose": "Toasts, popovers, menus, Design composer, floating Design toolbars, project-cover hover."
+      },
+      {
+        "name": "sheet",
+        "value": "0 2px 6px rgba(20,20,19,.08), 0 24px 60px rgba(20,20,19,.18)",
+        "purpose": "Modals, Ctrl+K palette, phone sidebar drawer."
+      },
+      {
+        "name": "stage",
+        "value": "0 1px 3px rgba(20,20,19,.12), 0 18px 50px rgba(20,20,19,.18)",
+        "purpose": "Design canvas stage only."
+      },
+      {
+        "name": "scrim",
+        "value": "rgba(20,20,19,.42)",
+        "purpose": "Backdrop behind sheets and palette; no blur."
+      },
+      {
+        "name": "band-rule",
+        "value": "border-bottom: 6px solid #F4F3EF; box-shadow: 0 1px 0 #141413",
+        "purpose": "Printed double rule under the title band (not elevation)."
+      }
+    ],
+    "rules": [
+      {
+        "name": "cover",
+        "value": "6px solid #141413",
+        "purpose": "Title-band foot, foot band, agent cards, sheets, palette, lockbox, integrations, board columns, Design composer."
+      },
+      {
+        "name": "heavy",
+        "value": "3px solid #141413",
+        "purpose": "Brand underline, approvals (red), monitors, chat list head."
+      },
+      {
+        "name": "frame",
+        "value": "2px solid #141413",
+        "purpose": "Top of tables, ledgers, logs, section titles, callouts."
+      },
+      {
+        "name": "hairline",
+        "value": "1px solid #DCDAD3",
+        "purpose": "Row and cell dividers, card edges."
+      }
+    ],
+    "motion": [
+      {
+        "name": "band-in",
+        "value": "clip-path inset(0 100% 0 0) → inset(0) 220ms cubic-bezier(.2,.8,.2,1)",
+        "purpose": "Title band wipes in from the left on navigation; disabled under prefers-reduced-motion."
+      },
+      {
+        "name": "ease-print",
+        "value": "cubic-bezier(.2, .8, .2, 1)",
+        "purpose": "Band wipe and switch tick scale-in."
+      },
+      {
+        "name": "state",
+        "value": "150ms (background, border-color, color)",
+        "purpose": "Button and switch state changes."
+      },
+      {
+        "name": "tick",
+        "value": "transform 180ms cubic-bezier(.2,.8,.2,1), opacity 120ms",
+        "purpose": "Printed-mark switch tick appearing."
+      },
+      {
+        "name": "fold",
+        "value": "transform 200ms",
+        "purpose": "Design chat fold-to-spine chevron rotation."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone",
+        "value": "900px",
+        "purpose": "Mobile bar replaces sidebar; 14px gutters; band title hidden; 2-column ledger."
+      },
+      {
+        "name": "compact",
+        "value": "1100px",
+        "purpose": "Design side panel 320px; map and control room stack."
+      },
+      {
+        "name": "gutter-compact",
+        "value": "1280px",
+        "purpose": "24px view gutters."
+      },
+      {
+        "name": "design-toolbar",
+        "value": "1500px",
+        "purpose": "Design top bar drops button labels."
+      }
+    ],
+    "hooks": [
+      {
+        "name": "data-k / data-client / data-agent",
+        "purpose": "Sets --series to the agent colour; logo() in app.js adds data-k, design.js adds data-agent on project covers and the open project."
+      },
+      {
+        "name": "data-count",
+        "purpose": "syncBand() in app.js copies the sidebar count into the active band; rendered as the band numeral."
+      },
+      {
+        "name": "#dz-fold / .dz-folded / data-spine",
+        "purpose": "design.js folds the Design chat to a 44px spine; state persisted in localStorage dz-folded."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Title Band",
+      "kind": "custom",
+      "refersTo": "band",
+      "description": "Black cover band: tracked section name, subtitle, inverted actions and the corner count numeral.",
+      "html": "<header class=\"ds-band\"><div><h1 class=\"ds-band-title\">Servidores MCP</h1><p class=\"ds-band-sub\">Un registro para todos tus agentes.</p></div><button class=\"ds-band-btn\">Sincronizar</button><button class=\"ds-band-btn ds-band-primary\">Añadir servidor</button><span class=\"ds-band-num\">18</span></header>",
+      "css": ".ds-band{display:flex;align-items:center;gap:10px;padding:22px 40px 20px;background:var(--n10, #141413);color:var(--n0, #FCFCFA);font-family:'Cabin Variable', Cabin, 'Gill Sans', system-ui, sans-serif;border-bottom:6px solid var(--n1, #F4F3EF);box-shadow:0 1px 0 var(--n10, #141413);animation:ds-band-in .22s cubic-bezier(.2,.8,.2,1) both}.ds-band>div{flex:1}.ds-band-title{margin:0;font-size:21px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;line-height:1.15}.ds-band-sub{margin:6px 0 0;font-size:13.5px;color:var(--n4, #C4C1B8)}.ds-band-btn{height:36px;padding:0 14px;border-radius:3px;border:1px solid var(--n7, #57544D);background:transparent;color:var(--n0, #FCFCFA);font:500 13.5px 'Cabin Variable', Cabin, 'Gill Sans', system-ui, sans-serif;cursor:pointer;transition:background .15s,border-color .15s}.ds-band-btn:hover{background:var(--n9, #262522);border-color:var(--n5, #A29E94)}.ds-band-btn:focus-visible{outline:2px solid var(--n0, #FCFCFA);outline-offset:2px}.ds-band-primary{background:var(--n0, #FCFCFA);border-color:var(--n0, #FCFCFA);color:var(--n10, #141413);font-weight:600}.ds-band-primary:hover{background:var(--n2, #EAE9E3);border-color:var(--n2, #EAE9E3)}.ds-band-num{margin-left:12px;padding-left:22px;border-left:1px solid var(--n8, #3D3B36);font-size:40px;font-weight:700;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}@keyframes ds-band-in{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}@media (prefers-reduced-motion:reduce){.ds-band{animation:none}}"
+    },
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ink slab for the main action on the page.",
+      "html": "<button class=\"ds-btn-primary\">Guardar</button>",
+      "css": ".ds-btn-primary{height:36px;padding:0 14px;border-radius:3px;border:1px solid var(--n10, #141413);background:var(--n10, #141413);color:var(--n0, #FCFCFA);font:600 13.5px 'Cabin Variable', Cabin, 'Gill Sans', system-ui, sans-serif;cursor:pointer;transition:background .15s,border-color .15s}.ds-btn-primary:hover{background:var(--n8, #3D3B36);border-color:var(--n8, #3D3B36)}.ds-btn-primary:focus-visible{outline:2px solid var(--n10, #141413);outline-offset:2px}"
+    },
+    {
+      "name": "Default Button",
+      "kind": "button",
+      "refersTo": "button-default",
+      "description": "Hairline-boxed printed button; struck through when disabled.",
+      "html": "<button class=\"ds-btn\">Explorar</button> <button class=\"ds-btn\" disabled>Comprobar</button>",
+      "css": ".ds-btn{height:36px;padding:0 14px;border-radius:3px;border:1px solid var(--n4, #C4C1B8);background:var(--n0, #FCFCFA);color:var(--n10, #141413);font:500 13.5px 'Cabin Variable', Cabin, 'Gill Sans', system-ui, sans-serif;cursor:pointer;transition:background .15s,border-color .15s,color .15s}.ds-btn:hover:not(:disabled){background:var(--n2, #EAE9E3);border-color:var(--n8, #3D3B36)}.ds-btn:active:not(:disabled){background:var(--n3, #DCDAD3)}.ds-btn:focus-visible{outline:2px solid var(--n10, #141413);outline-offset:2px}.ds-btn:disabled{background:var(--n1, #F4F3EF);border-color:var(--n3, #DCDAD3);color:var(--n5, #A29E94);text-decoration:line-through;text-decoration-thickness:1px;cursor:default}"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Corrector-edged button for destructive actions.",
+      "html": "<button class=\"ds-btn-danger\">Eliminar</button>",
+      "css": ".ds-btn-danger{height:36px;padding:0 14px;border-radius:3px;border:1px solid var(--err-line, #EBB3AD);background:var(--n0, #FCFCFA);color:var(--err-text, #A3221D);font:500 13.5px 'Cabin Variable', Cabin, 'Gill Sans', system-ui, sans-serif;cursor:pointer;transition:background .15s,border-color .15s}.ds-btn-danger:hover{background:var(--err-bg, #FBE6E3);border-color:var(--err, #C42F2A)}.ds-btn-danger:focus-visible{outline:2px solid var(--n10, #141413);outline-offset:2px}"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Cover-white field, double-struck in ink on focus.",
+      "html": "<input class=\"ds-field\" placeholder=\"Buscar\">",
+      "css": ".ds-field{height:36px;width:260px;padding:0 12px;border-radius:3px;border:1px solid var(--n4, #C4C1B8);background:var(--n0, #FCFCFA);color:var(--n10, #141413);font:400 14px 'Cabin Variable', Cabin, 'Gill Sans', system-ui, sans-serif;caret-color:var(--n10, #141413);outline:none}.ds-field::placeholder{color:var(--n6, #6F6C64)}.ds-field:focus{border-color:var(--n10, #141413);box-shadow:0 0 0 1px var(--n10, #141413)}"
+    },
+    {
+      "name": "Printed-Mark Switch",
+      "kind": "custom",
+      "refersTo": "switch-on",
+      "description": "Per-agent on/off as a printed checkbox filled with the agent series colour.",
+      "html": "<button class=\"ds-sw\" aria-pressed=\"true\" style=\"--series:#D9601A\"><span class=\"ds-track\"><span class=\"ds-knob\"></span></span></button><button class=\"ds-sw\" aria-pressed=\"true\" style=\"--series:#1E7A4F\"><span class=\"ds-track\"><span class=\"ds-knob\"></span></span></button><button class=\"ds-sw\" aria-pressed=\"false\"><span class=\"ds-track\"><span class=\"ds-knob\"></span></span></button>",
+      "css": ".ds-sw{width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;background:none;border:0;padding:0;cursor:pointer}.ds-track{width:20px;height:20px;display:flex;align-items:center;justify-content:center;border-radius:2px;background:var(--n0, #FCFCFA);box-shadow:inset 0 0 0 1.5px var(--n7, #57544D);transition:background .15s,box-shadow .15s}.ds-knob{width:6px;height:11px;border:solid var(--n0, #FCFCFA);border-width:0 2.2px 2.2px 0;transform:translateY(-1px) rotate(45deg) scale(.4);opacity:0;transition:transform .18s cubic-bezier(.2,.8,.2,1),opacity .12s}.ds-sw:hover .ds-track{box-shadow:inset 0 0 0 1.5px var(--n10, #141413)}.ds-sw[aria-pressed=\"true\"] .ds-track{background:var(--series,var(--n10, #141413));box-shadow:inset 0 0 0 1.5px var(--series,var(--n10, #141413))}.ds-sw[aria-pressed=\"true\"] .ds-knob{transform:translateY(-1px) rotate(45deg) scale(1);opacity:1}.ds-sw:focus-visible{outline:none}.ds-sw:focus-visible .ds-track{box-shadow:inset 0 0 0 1.5px var(--n10, #141413),0 0 0 2px var(--n1, #F4F3EF),0 0 0 4px var(--n10, #141413)}"
+    },
+    {
+      "name": "Sidebar Navigation",
+      "kind": "nav",
+      "refersTo": "nav-item-active",
+      "description": "Index tabs: active item is an ink slab; running count is a lamp block.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-i ds-on\">Servidores MCP<em>18</em></a><a class=\"ds-nav-i\">Catálogo<em>28</em></a><a class=\"ds-nav-i\">Terminales<em class=\"ds-badge\">1</em></a></nav>",
+      "css": ".ds-nav{display:flex;flex-direction:column;gap:1px;width:232px;padding:8px;background:var(--n2, #EAE9E3)}.ds-nav-i{display:flex;align-items:center;height:34px;padding:0 10px;border-radius:2px;color:var(--n8, #3D3B36);font:500 13.5px 'Cabin Variable', Cabin, 'Gill Sans', system-ui, sans-serif;cursor:pointer;text-decoration:none}.ds-nav-i em{margin-left:auto;font:400 11.5px 'Geist Mono Variable', 'Geist Mono', ui-monospace, monospace;font-style:normal;color:var(--n6, #6F6C64)}.ds-nav-i:hover{background:var(--n3, #DCDAD3);color:var(--n10, #141413)}.ds-nav-i:focus-visible{outline:2px solid var(--n10, #141413);outline-offset:2px}.ds-nav-i.ds-on{background:var(--n10, #141413);color:var(--n0, #FCFCFA);font-weight:600}.ds-nav-i.ds-on em{color:var(--n4, #C4C1B8)}.ds-nav-i em.ds-badge{background:var(--live, #C98A00);color:var(--n10, #141413);border-radius:2px;padding:1px 7px;font-weight:600}"
+    },
+    {
+      "name": "Status Pills and Tags",
+      "kind": "chip",
+      "refersTo": "pill",
+      "description": "Rubber stamps: ink tick for ok, lamp for running, corrector for needs-you; caps transport tag.",
+      "html": "<span class=\"ds-pill ds-ok\">Conectado</span> <span class=\"ds-pill ds-live\"><i></i>En marcha</span> <span class=\"ds-pill ds-err\">Necesita aprobación</span> <span class=\"ds-tag\">stdio</span>",
+      "css": ".ds-pill{display:inline-flex;align-items:center;gap:6px;padding:3px 8px;border-radius:2px;border:1px solid var(--n4, #C4C1B8);background:var(--n0, #FCFCFA);color:var(--n8, #3D3B36);font:500 11.5px 'Cabin Variable', Cabin, 'Gill Sans', system-ui, sans-serif}.ds-ok{color:var(--n9, #262522)}.ds-ok::before{content:\"\";width:9px;height:5px;border:solid currentColor;border-width:0 0 2px 2px;transform:translateY(-2px) rotate(-45deg)}.ds-live{background:var(--live-bg, #FBF0D2);border-color:var(--live-line, #E8CF8C);color:var(--warn-text, #7A5400)}.ds-live i{width:8px;height:8px;border-radius:50%;background:var(--live, #C98A00)}.ds-err{background:var(--err-bg, #FBE6E3);border-color:var(--err-line, #EBB3AD);color:var(--err-text, #A3221D);font-weight:600}.ds-tag{display:inline-block;padding:2px 6px;border-radius:2px;background:var(--n2, #EAE9E3);color:var(--n8, #3D3B36);font:600 10px 'Cabin Variable', Cabin, 'Gill Sans', system-ui, sans-serif;letter-spacing:.1em;text-transform:uppercase}"
+    },
+    {
+      "name": "Ruled Ledger",
+      "kind": "card",
+      "refersTo": "stat-ledger",
+      "description": "Stats row as a ledger under a 2px ink rule; attention cell takes the lamp.",
+      "html": "<div class=\"ds-ledger\"><div class=\"ds-cell\"><span>Servidores</span><b>18</b></div><div class=\"ds-cell\"><span>Conexiones activas</span><b>76</b></div><div class=\"ds-cell ds-warn\"><span>Por revisar</span><b>2</b></div></div>",
+      "css": ".ds-ledger{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:var(--n0, #FCFCFA);border-top:2px solid var(--n10, #141413);border-bottom:1px solid var(--n4, #C4C1B8);font-family:'Cabin Variable', Cabin, 'Gill Sans', system-ui, sans-serif}.ds-cell{display:flex;flex-direction:column;gap:6px;padding:14px 18px 15px;border-left:1px solid var(--n3, #DCDAD3)}.ds-cell:first-child{border-left:0}.ds-cell span{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--n7, #57544D)}.ds-cell b{font-size:30px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--n10, #141413)}.ds-warn{background:var(--live-bg, #FBF0D2)}.ds-warn span{color:var(--warn-text, #7A5400)}.ds-warn b::after{content:\"\";display:inline-block;width:9px;height:9px;margin-left:8px;vertical-align:6px;border-radius:50%;background:var(--live, #C98A00)}"
+    },
+    {
+      "name": "Project Cover",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Design project as a square cover topped by its agent series stripe; folds to a spine when open.",
+      "html": "<article class=\"ds-cover\" style=\"--series:#1E7A4F\"><div class=\"ds-thumb\"></div><div class=\"ds-meta\"><b>Prueba landing</b><small>Codex · hace 2 h</small></div></article>",
+      "css": ".ds-cover{position:relative;width:240px;background:var(--n0, #FCFCFA);box-shadow:0 0 0 1px var(--n3, #DCDAD3);font-family:'Cabin Variable', Cabin, 'Gill Sans', system-ui, sans-serif;cursor:pointer;transition:box-shadow .15s}.ds-cover::before{content:\"\";position:absolute;inset:0 0 auto;height:8px;background:var(--series,var(--n10, #141413))}.ds-cover:hover{box-shadow:0 0 0 1px var(--n10, #141413),0 1px 2px rgba(20,20,19,.06),0 8px 24px rgba(20,20,19,.10)}.ds-thumb{height:140px;background:var(--n2, #EAE9E3);border-bottom:1px solid var(--n10, #141413)}.ds-meta{display:flex;flex-direction:column;gap:2px;padding:10px 12px}.ds-meta b{font-weight:700;letter-spacing:.02em;color:var(--n10, #141413)}.ds-meta small{font-size:12px;color:var(--n6, #6F6C64)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Colour-Coded Paperback Series",
+    "overview": "Every agent is a paperback series with one flat series colour, and every view is a cover in three bands: a black title band carrying the section name in tracked capitals, a light working panel holding the dense table, and a thin black foot band. The model is the mid-century colour-coded pocket series (tri-band cover, a strict grid of rules): authority comes from ink, rules and position, not from surfaces or gradients. Design projects are covers too, each topped by its agent's series stripe, and a folded chat panel becomes a spine with its title running vertically.\n\nThe page is off-white cover stock with ink; an eleven-step warm-neutral ramp supplies every grey. Colour is scarce and carries meaning. The five series colours mark which agent something belongs to. A lamp ochre marks what is running right now. A corrector red marks what needs the user. Nothing else tints. States are printed marks at one device pixel: a hairline box at rest, filled when on, struck through when disabled, and bracketed by an ink outline on focus. Terminals stay dark, like printouts pasted onto the page.\n\nDensity is high on purpose. Tables keep five agent columns, ledgers keep four figures, and the sidebar keeps every section with its count. The system refuses the dark-panel developer dashboard with a single purple accent. It also refuses the rounded-card SaaS look the codebase started from, whose 10 to 16 px radii the world layer flattens to 0 to 4 px.",
+    "keyCharacteristics": [
+      "Three-band covers: a black band (`#141413`), a light panel, and a 6 px black foot band on every scrolling view.",
+      "One series colour per agent, applied through a single `--series` custom property keyed by `data-k`, `data-client` or `data-agent`.",
+      "Three reserved signal colours in all: series hues for \"whose\", lamp ochre for \"running now\", corrector red for \"needs you\".",
+      "Cabin in tracked uppercase on bands and labels, sentence case everywhere else, Geist Mono for commands and figures in code.",
+      "Square corners on anything that carries a band, 3 px on controls, 2 px on printed marks.",
+      "A flat page. Only floating sheets cast shadows."
+    ],
+    "rules": [
+      {
+        "name": "The Series Rule",
+        "body": "Only an agent's own series colour may tint something that belongs to that agent. It travels through `--series`, never as a literal hex in a component. Borrowing a series hue for a meaning that is not \"this agent\" breaks the code.",
+        "section": "colors"
+      },
+      {
+        "name": "The Lamp Rule",
+        "body": "Ochre means \"running right now\", nothing else. A warning that is neither running nor needing the user is neutral and dashed (`1px dashed` stone or muted ink), not ochre.",
+        "section": "colors"
+      },
+      {
+        "name": "The Corrector Rule",
+        "body": "Red appears only where the user must act or something has failed. It is never decoration and never a brand accent.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ink-Is-Healthy Rule",
+        "body": "Healthy, connected or installed is shown in ink: a ticked pill, a 6 px ink dot, or an ink-bordered card. Green belongs to Codex alone.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tracked Band Rule",
+        "body": "Capitals with 0.12 to 0.16em tracking are reserved for bands, section rules, table and ledger captions, board column heads and the brand. Body text, buttons and names stay in sentence case.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Rule",
+        "body": "Every figure is tabular: ledger cells, band numerals, nav counts and table counts. Numbers must line up down a column.",
+        "section": "typography"
+      },
+      {
+        "name": "The Three-Band Cover Rule",
+        "body": "Every scrolling view has a black title band, a light working panel, and a 6 px black foot band. A new view that drops a band no longer belongs to the series.",
+        "section": "layout"
+      },
+      {
+        "name": "The Density Rule",
+        "body": "Keep the table. Information is shown as ruled rows and ledgers, not as a grid of floating cards, and the phone layout reflows the same content without removing it.",
+        "section": "layout"
+      },
+      {
+        "name": "The Flat Page Rule",
+        "body": "Nothing that sits on the page casts a shadow. Bands, tables, ledgers, cards and board columns are separated by rules and tone. A shadow means \"this floats and will go away\".",
+        "section": "elevation"
+      },
+      {
+        "name": "The Printed Rule Weights Rule",
+        "body": "Rules come in fixed weights: 6 px for cover bands and sheet heads (title-band gap, foot band, agent cards, modals, palette, lockbox, integrations, board columns, Design composer); 3 px for the brand underline, approvals, monitors and the chat list head; 2 px for the tops of tables, ledgers, logs, section titles and callouts; and 1 px hairlines for everything else.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Live Corner Rule",
+        "body": "If it has a band or a top rule of 2 px or more, its corners are square. The world layer enforces this with `border-radius: 0 !important`.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "**Do** open every scrolling view with the black title band (section name at 21 px, 700, 0.12em, uppercase) and close it with the 6 px ink foot band.",
+      "**Do** route agent colour through `--series` by tagging the element with `data-k`, `data-client` or `data-agent`. Never hard-code a series hex in a component.",
+      "**Do** keep every grey on the `--n0` to `--n10` ramp.",
+      "**Do** mark state as print: hairline box at rest, filled when on, struck through when disabled, ink bracket (2 px outline, 2 px offset) on focus.",
+      "**Do** rank status by dot size before colour (6 / 8 / 10 px).",
+      "**Do** pair every state with its evidence in the same row, such as a diff, an output, a command or a count.",
+      "**Do** invert buttons inside bands: the primary becomes a cover-white slab, and secondaries become muted-ink outlines.",
+      "**Do** use tabular figures for every number, and Geist Mono for commands, paths and keys.",
+      "**Do** give anything with a band or a top rule of 2 px or more square corners. Use 3 px for controls and 2 px for marks.",
+      "**Do** keep terminals dark (ink ground, terminal-text type) on the light page."
+    ],
+    "donts": [
+      "**Don't** use green for health, success or \"installed\". Green is Codex's series colour, and healthy is ink.",
+      "**Don't** use lamp ochre for anything that is not running right now. Neutral advisories are dashed and stay in ink and stone.",
+      "**Don't** use corrector red decoratively or as an accent. It means \"this needs you\".",
+      "**Don't** put shadows on on-page elements such as bands, tables, ledgers, cards or board columns. Shadows are only for toasts, popovers, sheets, the palette and the Design stage.",
+      "**Don't** reintroduce the large radii the world layer replaced (10 to 16 px cards, 20 px pill capsules, rounded slide toggles).",
+      "**Don't** set tracked uppercase on body text, buttons or names. It belongs to bands, section rules, captions and column heads.",
+      "**Don't** put the small explanatory line of a sheet title above the title. It goes beneath.",
+      "**Don't** drop columns or ledger cells to make a phone layout fit. Reflow them, and let tables scroll inside their own panel.",
+      "**Don't** blur the scrim behind sheets."
+    ]
+  }
+}
