@@ -617,7 +617,8 @@ async function designAgentApi(action, b) {
     const width = Math.min(Number(b.width) || (slides ? 1920 : m.type === 'mobile' ? 390 : 1440), 3000);
     const height = Math.min(Number(b.height) || (slides ? 1080 : m.type === 'mobile' ? 844 : 900), 3000);
     const slide = slides ? Number(b.slide) || 1 : null;
-    const png = await designer.screenshot(designer.hooks.fileUrl(b.slug, 'index.html', { clean: true, slide }), { width, height, full: !!b.full_page && !slides, jpeg: true });
+    const view = ['front', 'side', 'top', 'back', 'three-quarter'].includes(b.view) ? b.view : null;
+    const png = await designer.screenshot(designer.hooks.fileUrl(b.slug, 'index.html', { clean: true, slide }), { width, height, full: !!b.full_page && !slides, jpeg: true, view });
     return { png: png.toString('base64'), name: m.name, width, height, slide, slides: slides ? await designer.slideCount(designer.hooks.fileUrl(b.slug, 'index.html', { clean: true })) : null };
   }
   if (action === 'export') {
@@ -877,6 +878,7 @@ const routes = {
     if (r.applied) await commitDesign(b.slug, `Edición de ${r.applied} texto${r.applied > 1 ? 's' : ''}`);
     return r;
   },
+  'GET /api/design/formats3d': async () => ({ formats: designer.formats3d() }),
   'GET /api/design/versions': async (_b, url) => ({ versions: await designer.versions(url.searchParams.get('slug')) }),
   'POST /api/design/restore': async (b) => { await designer.restore(b.slug, b.sha); return {}; },
   'POST /api/design/open-folder': async (b) => { spawn('xdg-open', [designer.dir(b.slug)], { detached: true, stdio: 'ignore' }).unref(); return {}; },

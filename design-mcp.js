@@ -83,9 +83,9 @@ Tipos: ${TYPES.join(', ')}. Escribe un encargo claro y completo (público, conte
   },
   {
     name: 'design_export',
-    description: 'Exporta un diseño a un archivo: pdf, png, pptx (presentaciones), html (un solo archivo autocontenido) o zip (carpeta). Devuelve la ruta del archivo.',
+    description: 'Exporta un diseño a un archivo: pdf, png, pptx (presentaciones), html (un solo archivo autocontenido), zip (carpeta) o, si es una escena 3D, glb, gltf, obj, stl, ply, usdz, fbx, blend, usd o abc. Devuelve la ruta del archivo.',
     inputSchema: { type: 'object', properties: {
-      slug: SLUG, format: { type: 'string', enum: ['pdf', 'png', 'pptx', 'html', 'zip'] },
+      slug: SLUG, format: { type: 'string', enum: ['pdf', 'png', 'pptx', 'html', 'zip', 'glb', 'gltf', 'obj', 'stl', 'ply', 'usdz', 'fbx', 'blend', 'usd', 'abc'], description: 'Formatos 3D (glb, gltf, obj, stl, ply, usdz, fbx, blend, usd, abc) solo para diseños con una escena Three.js' },
       output: { type: 'string', description: 'Carpeta o ruta de destino (por defecto ~/Designs/_exportaciones/)' },
     }, required: ['slug', 'format'] },
   },

@@ -137,6 +137,7 @@ function renderDesignHome() {
           <button class="dz-kinds-head" id="dzc-tpl-toggle">ELIGE UNA PLANTILLA ${svg('chev', 'i dz-caret')}</button>
           ${C.tplOpen ? `<div class="dz-kgrid">${KINDS.map((k) => `<button class="dz-kind ${k.id === C.kind ? 'on' : ''}" data-kind="${k.id}">${kindArt(k)}<span>${k.name}</span></button>`).join('')}</div>` : ''}
         </div>
+        ${C.kind === 'model3d' ? GUIDE_3D : ''}
       </div>
 
       <div class="dz-listbar">
@@ -225,6 +226,19 @@ function registerDesignMcp() {
 }
 document.addEventListener('click', (e) => { if (!e.target.closest('.dz-pick-wrap, .dz-rowmenu')) { $$('.dz-pop2').forEach((p) => p.classList.add('hidden')); $('.dz-rowmenu')?.remove(); } });
 
+// Guía para el usuario: cómo pedir un buen objeto 3D (se muestra al elegir «Objeto 3D»)
+const GUIDE_3D = `<details class="dz-guide" open><summary>${svg('info')}Cómo conseguir un buen objeto 3D</summary><div class="dz-guide-body">
+  <ol>
+    <li><b>Describe las piezas y sus medidas</b>, no solo el nombre: «frasco rectangular de 9 × 7 × 3 cm, tapón cúbico dorado de 3 cm, etiqueta negra con el texto NOIR».</li>
+    <li><b>Adjunta una foto</b> de frente (y otra de lado si puedes): el agente copia la silueta, los colores y los textos que se vean.</li>
+    <li><b>Di los materiales</b>: cristal, metal pulido o cepillado, plástico mate o brillante, madera, tela, laca… Es lo que más realismo da.</li>
+    <li><b>Pide los cambios de uno en uno</b> («el tapón más alto», «cristal ahumado», «gíralo de frente») o marca la pieza con <b>Comentarios</b> en el lienzo.</li>
+    <li><b>Para estilo vóxel o Minecraft</b>, dilo tal cual: se construye con cubos.</li>
+  </ol>
+  <p>El agente parte de una escena ya preparada (luz de estudio, reflejos, sombra, giro con el ratón) y solo modela el objeto; al terminar se mira desde el frente, el lado y arriba, y corrige lo que vea mal.</p>
+  <p><b>Descargar</b>: Exportar → Modelo 3D: GLB, glTF, FBX, OBJ, BLEND, USDZ, USD, STL, PLY y Alembic. Solo se exporta el objeto, sin fondo ni suelo.</p>
+  <p><b>¿Claude o Codex?</b> Con el mismo encargo (un frasco de perfume), Claude tardó unos 1,5 min y Codex entre 2 y 4 según su esfuerzo de razonamiento; los dos dieron un buen resultado. Con Codex, en la barra del proyecto puedes elegir el esfuerzo: «medio» (por defecto) es el equilibrio; «bajo» es aún más rápido para probar ideas; «máximo» detalla algo más pero tarda el doble.</p>
+</div></details>`;
 function addComposerFiles(files) {
   for (const f of files) DZ.compose.files.push(Object.assign(f, { url: f.type.startsWith('image/') ? URL.createObjectURL(f) : '' }));
   const keep = $('#dzc-text')?.value; renderDesignHome(); if (keep != null) $('#dzc-text').value = keep;
@@ -409,7 +423,8 @@ function renderProject() {
         <span class="tag">${DZ_TYPES[p.type] || p.type}</span>
         <button class="btn dz-mtoggle" id="dz-mtoggle" aria-label="Cambiar entre chat y lienzo">${svg('design')}<span>Ver lienzo</span></button>
         <div class="dz-agent">${logo(p.agent, 22, { plain: true })}<select id="dz-agent" aria-label="Agente">${agentOptions(p.agent)}</select>
-          <input id="dz-model" class="mono" value="${esc(p.model || '')}" placeholder="modelo" aria-label="Modelo"></div>
+          <input id="dz-model" class="mono" value="${esc(p.model || '')}" placeholder="modelo" aria-label="Modelo">
+          ${p.agent === 'codex' ? `<select id="dz-effort" title="Esfuerzo de razonamiento de Codex: menos es más rápido" aria-label="Esfuerzo de razonamiento">${[['low', 'Esfuerzo bajo (más rápido)'], ['medium', 'Esfuerzo medio (recomendado)'], ['high', 'Esfuerzo alto'], ['xhigh', 'Esfuerzo máximo (lento)'], ['', 'Esfuerzo: el de tu config']].map(([v, l]) => `<option value="${v}" ${(p.effort ?? 'medium') === v ? 'selected' : ''}>${l}</option>`).join('')}</select>` : ''}</div>
         <span class="dz-spacer"></span>
         <div class="seg dz-modes" id="dz-modes">
           <button data-mode="view" title="Navegar (V)">${svg('cursor')}</button><button data-mode="comment" title="Comentar (C)">${svg('comment')}</button>
@@ -419,6 +434,7 @@ function renderProject() {
         <button class="btn icon" id="dz-reload" title="Recargar" aria-label="Recargar">${svg('reload')}</button>
         <div class="dz-menu-wrap"><button class="btn" id="dz-export" title="Exportar y compartir">${svg('download')}<span class="lbl">Exportar</span></button><div class="dz-menu hidden" id="dz-export-menu">
           ${slides ? '<button data-x="present">Presentar a pantalla completa</button><button data-x="pptx">PowerPoint (.pptx)</button>' : ''}
+          ${p.type === 'model3d' ? `<span class="dz-menu-h">Modelo 3D (solo el objeto)</span>${MODEL_FORMATS.map(([x, l, h]) => `<button data-x="${x}">${l}<small>${h}</small></button>`).join('')}<hr>` : ''}
           <button data-x="pdf">PDF</button><button data-x="png">${slides ? 'Imágenes PNG (.zip)' : 'Imagen PNG (página completa)'}</button>
           <button data-x="html">Archivo HTML único (para compartir)</button><button data-x="zip">Carpeta del proyecto (.zip)</button>
           <hr><button data-x="video-mp4">Vídeo de demostración (.mp4)</button><button data-x="video-gif">Demostración animada (.gif)</button>
@@ -451,6 +467,7 @@ function renderProject() {
     $('#dz-mtoggle span').textContent = on ? 'Ver chat' : 'Ver lienzo';
     requestAnimationFrame(layoutStage);
   };
+  $('#dz-effort')?.addEventListener('change', (e) => api('/api/design/update', { slug: DZ.slug, effort: e.target.value }).then((r) => { DZ.p.effort = r.effort; toast('Esfuerzo de Codex actualizado'); }).catch((err) => toast(err.message, true)));
   $('#dz-name').onchange = (e) => api('/api/design/update', { slug: DZ.slug, name: e.target.value }).then((r) => { DZ.p.name = r.name; }).catch((err) => toast(err.message, true));
   $('#dz-agent').onchange = async (e) => { try { DZ.p = { ...DZ.p, ...(await api('/api/design/update', { slug: DZ.slug, agent: e.target.value })) }; $('.dz-agent .logo')?.replaceWith(document.createRange().createContextualFragment(logo(e.target.value, 22, { plain: true }))); toast(`Ahora diseña ${agentName(e.target.value)}`); } catch (err) { toast(err.message, true); } };
   $('#dz-model').onchange = (e) => api('/api/design/update', { slug: DZ.slug, model: e.target.value }).catch((err) => toast(err.message, true));
@@ -799,6 +816,13 @@ function restoreVersion(v) {
 }
 
 // ---------------- Exportar y pasar a código ----------------
+// Formatos 3D: los primeros salen de la escena con Three.js; FBX, BLEND, USD, Alembic y OBJ se convierten con Blender
+const MODEL_FORMATS = [
+  ['glb', 'GLB', 'Web, realidad aumentada en Android, motores de juego'], ['gltf', 'glTF', 'Web (JSON con texturas incluidas)'],
+  ['fbx', 'FBX', 'Unity, Unreal, Maya, 3ds Max'], ['obj', 'OBJ + MTL (.zip)', 'Formato universal, con materiales y texturas'],
+  ['blend', 'BLEND', 'Para seguir editándolo en Blender'], ['usdz', 'USDZ', 'Realidad aumentada en iPhone y iPad'],
+  ['usd', 'USD', 'Omniverse, Houdini, Maya'], ['stl', 'STL', 'Impresión 3D'], ['ply', 'PLY', 'Impresión 3D y escaneado'], ['abc', 'Alembic', 'Animación y VFX'],
+];
 async function doExport(x) {
   const p = DZ.p;
   if (x === 'open') return window.open(p.base + 'index.html', '_blank');
@@ -807,7 +831,8 @@ async function doExport(x) {
   if (x === 'dup') { const r = await api('/api/design/duplicate', { slug: DZ.slug }); toast('Duplicado'); return openDesign(r.slug); }
   const [w, h] = DZ.frame === 'fit' ? [1440, 900] : FRAMES[DZ.frame];
   const video = x.startsWith('video-') ? x.slice(6) : null;
-  toast(video ? 'Grabando el recorrido de demostración (tarda unos segundos)…' : `Exportando ${x.toUpperCase()}…`);
+  const fmt3d = MODEL_FORMATS.find((f) => f[0] === x);
+  toast(video ? 'Grabando el recorrido de demostración (tarda unos segundos)…' : fmt3d ? `Exportando el modelo a ${fmt3d[1]}…` : `Exportando ${x.toUpperCase()}…`);
   try {
     const r = await fetch(video ? `/api/design/video?${new URLSearchParams({ slug: DZ.slug, format: video, w, h, token: TOKEN })}` : `/api/design/export?${new URLSearchParams({ slug: DZ.slug, format: x, w, h, token: TOKEN })}`);
     if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || `HTTP ${r.status}`);
